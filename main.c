@@ -14,9 +14,9 @@ float srok, sum;
 int check;
     setlocale (LC_ALL, "rus");
     do {
-        printf ("Введите cумму вклада ");
+        printf ("Введите cумму вклада (в рублях) ");
         scanf ("%f", &sum);
-        printf ("Введите срок вклада ");
+        printf ("Введите срок вклада (в днях) ");
         scanf ("%f", &srok);
         check=proverka(srok,sum);
         if (check == 1) {
