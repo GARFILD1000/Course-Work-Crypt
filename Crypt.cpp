@@ -7,6 +7,15 @@
 #include <time.h>
 #include <windows.h>
 
+
+struct options{
+    char* input_file_name;
+    char* output_file_name;
+};
+struct options options;
+
+#include "VigenereCrypt.cpp"
+
 struct color{              //структуры цвета, хранят RGB-значения каждого цвета
     int red;
     int green;
@@ -16,10 +25,10 @@ struct color bg_color, point_color, punkt_color, word_color, temp_color, negativ
 
 
 int MenuCategory(){              //подменю зашифровки
-    
+    int key[2]={1,-1};             //массив ключей, -1 даёт знать, что это конец массива
     int button, point=1;
     setcolor(15);
-    do{ 
+    do{
         cleardevice();
         settextstyle(1,0,6);
         setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
@@ -28,7 +37,7 @@ int MenuCategory(){              //подменю зашифровки
         settextstyle(1,0,3); 
         outtextxy(300,180,"ВЫБОР ШИФРОВКИ:");
         if (point==1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,220,"Цезаря");
+        outtextxy(300,220,"Цезаря (в разработке)");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point==2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,250,"Виженера");
@@ -49,7 +58,16 @@ int MenuCategory(){              //подменю зашифровки
         switch(button){
         case 72: if (point>1) point--; break;
         case 80: if (point<3) point++; break;
-        case 13: if (point!=3) /* Точка вызова функции шифра */  ;cleardevice(); return 0; break;       
+        case 13: 
+            
+            if (point!=3) 
+                switch(point){
+                case 1: /* Точка вызова функции шифра цезаря*/ ; break;
+                case 2:  VigenereCrypt(key); break;
+                case 3: break;
+                };
+            cleardevice(); 
+            return 0;       
         case 27: cleardevice(); return 0;
         };
     } while(1);      
@@ -63,7 +81,6 @@ int MainMenu(){
 int button, point=1, red=0;
 settextstyle(1,0,3);
 settextjustify(1,1);
-setcolor(15);
     do{ settextstyle(1,0,6);
         if (red <250) red++;
         setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
@@ -124,7 +141,10 @@ int main(){
     negative_color.blue=0;
     negative_color.green=0;
     
-    FreeConsole();
+    options.input_file_name="input.txt";
+    options.output_file_name="output.txt";
+    
+    //FreeConsole();
     initwindow(600,400,"Шифратор");
     
     setbkcolor(RGB(bg_color.red,bg_color.green,bg_color.blue));
