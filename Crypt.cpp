@@ -14,8 +14,6 @@ struct options{
 };
 struct options options;
 
-#include "VigenereCrypt.cpp"
-
 struct color{              //структуры цвета, хранят RGB-значения каждого цвета
     int red;
     int green;
@@ -23,9 +21,11 @@ struct color{              //структуры цвета, хранят RGB-значения каждого цвета
 };
 struct color bg_color, point_color, punkt_color, word_color, temp_color, negative_color;
 
+#include "VigenereCrypt.cpp"
+#include "Options.cpp"
 
 int MenuCategory(){              //подменю зашифровки
-    int key[2]={1,-1};             //массив ключей, -1 даёт знать, что это конец массива
+    int key[4]={1,2,3,-1};             //массив ключей, -1 даёт знать, что это конец массива
     int button, point=1;
     setcolor(15);
     do{
@@ -119,8 +119,6 @@ settextjustify(1,1);
     
 }
 
-
-
 int main(){
     srand(time(NULL));
     setlocale(LC_ALL,"rus");  
@@ -162,7 +160,7 @@ int main(){
         switch (menu_choice){
         case 1: MenuCategory(); break;
         case 2: break;
-        case 3: break;
+        case 3: Options(); break;
         case 0: return 0;       
         };       
     }while(1);
