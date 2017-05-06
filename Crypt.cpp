@@ -63,25 +63,25 @@ int MenuCategory(){              //подменю зашифровки
             if (point!=3) 
                 switch(point){
                 case 1: /* Точка вызова функции шифра цезаря*/ ; break;
-                case 2:  VigenereCrypt(key); break;
+                case 2:  VigenereWindow(); break;
                 case 3: break;
                 };
             cleardevice(); 
             return 0;       
         case 27: cleardevice(); return 0;
         };
-    } while(1);      
-    
-    
-    
-};
+    } while(1);        
+}
 
 
 int MainMenu(){
 int button, point=1, red=0;
 settextstyle(1,0,3);
 settextjustify(1,1);
-    do{ settextstyle(1,0,6);
+setbkcolor(RGB(bg_color.red,bg_color.green,bg_color.blue));
+    do{ 
+        cleardevice();
+        settextstyle(1,0,6);
         if (red <250) red++;
         setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,100,"ШИФРАТОР"); 
@@ -126,6 +126,10 @@ int main(){
     punkt_color.blue=200;
     punkt_color.green=200;
     punkt_color.red=200;
+    
+    word_color.blue=150;
+    word_color.green=150;
+    word_color.red=150;
     
     point_color.blue=200;
     point_color.green=0;
