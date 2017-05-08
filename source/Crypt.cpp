@@ -6,11 +6,12 @@
 #include <string.h>
 #include <time.h>
 #include <windows.h>
-
+#include <string.h>
 
 struct options{
     char* input_file_name;
     char* output_file_name;
+    char* file_directory;
 };
 struct options options;
 
@@ -25,7 +26,6 @@ struct color bg_color, point_color, punkt_color, word_color, temp_color, negativ
 #include "Options.cpp"
 
 int MenuCategory(){              //подменю зашифровки
-    int key[4]={1,2,3,-1};             //массив ключей, -1 даЄт знать, что это конец массива
     int button, point=1;
     setcolor(15);
     do{
@@ -143,9 +143,9 @@ int main(){
     negative_color.blue=0;
     negative_color.green=0;
     
-    options.input_file_name="input.txt";
-    options.output_file_name="output.txt";
-    
+    options.input_file_name="FileIn.txt";
+    options.output_file_name="FileOut.txt";
+    options.file_directory="..\\files\\";
     //FreeConsole();
     initwindow(600,400,"Ўифратор");
     

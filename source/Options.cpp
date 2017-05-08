@@ -183,40 +183,40 @@ void Themes(int point){
     switch(point){
     case 1:
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (!(ThemeInit("themes\\Стандартная.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (!(ThemeInit("..\\themes\\Стандартная.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,40,"Стандартная");
         
         break;
     case 2:
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (!(ThemeInit("themes\\Воспоминания моряка.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (!(ThemeInit("..\\themes\\Воспоминания моряка.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,40,"Воспоминания моряка");
         
         break;
     case 3:
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (!(ThemeInit("themes\\Эмо.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (!(ThemeInit("..\\themes\\Эмо.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,40,"Эмо");
         
         break;
     case 4:
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (!(ThemeInit("themes\\Меланхолия.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (!(ThemeInit("..\\themes\\Меланхолия.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,40,"Меланхолия");
         
         break;
     case 5:
-        if (!(ThemeInit("themes\\Чёрно-белая скука.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (!(ThemeInit("..\\themes\\Чёрно-белая скука.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,40,"Чёрно-белая скука");
         
         break;
     case 6:
-        if (!(ThemeInit("themes\\Бело-чёрная страсть.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (!(ThemeInit("..\\themes\\Бело-чёрная страсть.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,40,"Бело-чёрная страсть");
         
         break;
     case 7:
-        if (!(ThemeInit("themes\\Цитрус.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue)); 
+        if (!(ThemeInit("..\\themes\\Цитрус.txt"))) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue)); 
         outtextxy(300,40,"Цитрус");
         break;
     };
@@ -359,7 +359,7 @@ void ColorSettings(){          //Точная настройка цвета
                                case 5:
                                    settextjustify(0,1);
                                    setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue)); 
-                                   outtextxy(20,260,"Заполнение слова");
+                                   outtextxy(20,260,"Вводимый текст");
                                    setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
                                    settextjustify(1,1);
                                    temp_color.red=word_color.red;
