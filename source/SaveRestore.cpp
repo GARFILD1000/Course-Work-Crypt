@@ -58,3 +58,35 @@ void RestoreOptionsWindow(){
         };
     }while(1);                                           
 }
+
+//   процедура загружает настройки и статистику из файла options.dat в соотвтствующие структуры
+//   если этого файла нет в каталоге, создаёт его и заполняет изначальными значениями
+void LoadOptions(){
+    FILE *options_file;
+    if ((options_file=fopen("..//saves//options.dat","rb"))==NULL){
+        options_file=fopen("..//saves//options.dat","wb");
+        RestoreOptions();
+    };
+    fread(&options,sizeof(options),1,options_file);  
+    fread(&bg_color,sizeof(color),1,options_file);  
+    fread(&point_color,sizeof(color),1,options_file);
+    fread(&punkt_color,sizeof(color),1,options_file);  
+    fread(&word_color,sizeof(color),1,options_file);  
+    fread(&negative_color,sizeof(color),1,options_file);
+    fclose(options_file);
+    return;
+}
+
+// процедура сохраняет настройки и статистику в файл options.dat
+void SaveOptions(){
+    FILE *options_file;
+    options_file=fopen("..//saves//options.dat","wb");
+    fwrite(&options,sizeof(options),1,options_file);  
+    fwrite(&bg_color,sizeof(color),1,options_file);  
+    fwrite(&point_color,sizeof(color),1,options_file); 
+    fwrite(&punkt_color,sizeof(color),1,options_file);  
+    fwrite(&word_color,sizeof(color),1,options_file);  
+    fwrite(&negative_color,sizeof(color),1,options_file);
+    fclose(options_file);  
+    return;                             
+}
