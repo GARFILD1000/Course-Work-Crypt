@@ -489,7 +489,7 @@ void Options(){
         button=getch();
         switch(button){
         case 72: if (point > 1) point--; break;
-        case 80: if (point < 5) point++; break;
+        case 80: if (point < 4) point++; break;
         case 13: 
             switch(point){
             case 1: 
@@ -499,10 +499,9 @@ void Options(){
                 Design();
                 return;
             case 3:
-                   
+                RestoreOptions();   
                 return;      
-            case 4:
-                   
+            case 4: 
                 return;             
             }; break;
         case 27: return;

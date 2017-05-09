@@ -23,8 +23,10 @@ struct color{              //структуры цвета, хранят RGB-значения каждого цвета
 };
 struct color bg_color, point_color, punkt_color, word_color, temp_color, negative_color;
 
+#include "SaveRestore.cpp"
 #include "VigenereCrypt.cpp"
 #include "Options.cpp"
+
 
 int MenuCategory(){              //подменю зашифровки
     int button, point=1;
