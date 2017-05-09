@@ -1,4 +1,10 @@
 int WordToKey(int key[], char word[]);
+int InputBox(int x1, int y1, short active, char word[]);
+int CheckSymbolLang(int symbol);
+int VigenereProcessingSymbol(int symbol, int key_symbol);
+void StackFilesPath(char filename[],int InOrOut);
+int VigenereCrypt(char word[]);
+void VigenereWindow();
 
 int InputBox(int x1, int y1, short active, char word[]){
     setlinestyle(0,0,2);
@@ -26,8 +32,8 @@ int InputBox(int x1, int y1, short active, char word[]){
             rectangle(x1,y1,x1+400,y1+40);
             setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
             outtextxy(x,y,word); 
-            printf("Ввод символа %d ",button);
-            printf("(%d)\n",word[i-1]);
+            printf("Ввод символа %с ",button);
+            printf("(%в)\n",word[i-1]);
             button=getch();
             
             if ((i<26)&&((button>=32)||(button<0)||(button==13))){
@@ -161,7 +167,7 @@ int VigenereCrypt(char word[]){
     while (word[word_length]!=0){
         word_length++;
     }; 
-    printf("Длина полученного слова: %d \nСамо слово: %s\n",word_length);
+    printf("Длина полученного слова: %d \nСамо слово: %s\n",word_length-1, word);
     key = new int[word_length];
     WordToKey(key,word);
     
@@ -170,8 +176,11 @@ int VigenereCrypt(char word[]){
     };
     
     printf("\nДлина ключа %d \nПолученный ключ шифра: \n",key_length);
-    for(int j=0; j<key_length; j++){ printf(" %d",key[j]);}; 
-    printf(".\n");
+    for(int j=0; j < key_length; j++){ 
+        printf("%d ",key[j]);
+    };
+    printf("\n");
+    if (key[0] == -1) return 3;
     
     input_filename=new char[100];
     output_filename=new char[100];
@@ -210,7 +219,35 @@ int VigenereCrypt(char word[]){
     return 0;
 };
 
-int VigenereWindow(){             //подменю зашифровки
+//выводит сообщение на экран в зависимости от результата работы функции VisenereCrypt
+void VisenereShowMessage(int result){
+    settextjustify(1,1);
+    settextstyle(1,0,3);
+    bar(100,100,500,300);
+    if (!result) setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+    else setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+    rectangle(100,100,500,300);
+    switch(result){
+    case 0: 
+        outtextxy(300,200,"Зашифровано!"); 
+    break;
+    case 1: 
+        outtextxy(300,180,"Неверно назван"); 
+        outtextxy(300,220,"файл для зашифровки!"); 
+    break;
+    case 2: 
+        outtextxy(300,180,"Неверно назван"); 
+        outtextxy(300,220,"файл с результатом!"); 
+    break;
+    case 3: 
+        outtextxy(300,180,"Введите");
+        outtextxy(300,220,"правильный ключ!"); 
+    break;
+    };
+    getch();
+}
+
+void VigenereWindow(){             //подменю зашифровки
     char *input_filename, *output_filename, *word, *temp_word; 
     int k=0; 
     input_filename=new char[50];
@@ -222,12 +259,12 @@ int VigenereWindow(){             //подменю зашифровки
     do{
         input_filename[k]=options.input_file_name[k];
         k++;
-    }while(options.input_file_name[k-1]!=0);
+    }while (options.input_file_name[k-1] != 0);
     k=0;
     do{
         output_filename[k]=options.output_file_name[k];
         k++;
-    }while(options.output_file_name[k-1]!=0);
+    }while (options.output_file_name[k-1] != 0);
     k=0;         
     
     int button, point=1;
@@ -239,52 +276,54 @@ int VigenereWindow(){             //подменю зашифровки
         outtextxy(300,50,"Шифр Виженера"); 
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         settextstyle(1,0,3); 
-        if (point==1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        if (point == 1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,100,"Назовите исходный файл");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        if (point == 2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,180,"Назовите зашифрованный файл");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==3) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        if (point == 3) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,260,"Введите ключ шифра");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==4) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        if (point == 4) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,340,"Зашифровать!");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==5) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (point == 5) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,370,"Назад");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        
         InputBox(100,110,0,options.input_file_name);
         InputBox(100,190,0,options.output_file_name);
         InputBox(100,270,0,word);
-        
         button=getch();
         switch(button){
-        case 72: if (point>1) point--; break;
-        case 80: if (point<5) point++; break;
+        case 72: if (point > 1) point--; break;
+        case 80: if (point < 5) point++; break;
         case 13: 
-                switch(point){
-                case 1: if (InputBox(100,110,1,input_filename)) options.input_file_name=input_filename; printf("\nReturn: "); printf("%s ", input_filename); break;
-                case 2: if (InputBox(100,190,1,output_filename)) options.output_file_name=output_filename; printf("\nReturn: "); printf("%s ", output_filename); break;
-                case 3: if (InputBox(100,270,1,temp_word)) word=temp_word; printf("\nReturn: "); printf("%s ", word); break;
-                case 4: 
-                    /*if ((word[0]==0)||()){
-                        bar(200,100,400,300);
-                        settextjustify(1,1);
-                        settextstyle(1,0,5);
-                        setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
-                        outtextxy(300,200,"Введите ключ!");
-                        getch();
-                        break;
-                    };*/
-                    VigenereCrypt(word);
-                     
-                    break;
-                case 5: cleardevice(); return 0; break;
-                };      
+            switch(point){
+            case 1: 
+                if (InputBox(100,110,1,input_filename)) options.input_file_name=input_filename; 
+                printf("\n Return: "); 
+                printf("%s ", input_filename); 
+            break;
+            case 2: 
+                if (InputBox(100,190,1,output_filename)) options.output_file_name=output_filename; 
+                printf("\n Return: "); 
+                printf("%s ", output_filename); 
+            break;
+            case 3: 
+                if (InputBox(100,270,1,temp_word)) word=temp_word; 
+                printf("\n Return: "); 
+                printf("%s ", word); 
+            break;
+            case 4: 
+                int result;
+                result = VigenereCrypt(word);
+                VisenereShowMessage(result);
+            break;
+            case 5: return; 
+            };      
         break; 
-        case 27: cleardevice(); return 0;
+        case 27: return;
         };
-    } while(1);        
+    }while (1);        
 }    

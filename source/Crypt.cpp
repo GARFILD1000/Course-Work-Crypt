@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <string.h>
 
+
 struct options{
     char* input_file_name;
     char* output_file_name;
