@@ -30,11 +30,12 @@ int InputBox(int x1, int y1, short active, char word[]){
             setcolor(RGB(point_color.red,point_color.green,point_color.blue));
             bar(x1,y1,x1+400,y1+40);
             rectangle(x1,y1,x1+400,y1+40);
-            setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+            setcolor(RGB(word_color.red,word_color.green,word_color.blue));
             outtextxy(x,y,word); 
-            printf("Ввод символа %с ",button);
-            printf("(%в)\n",word[i-1]);
+            
             button=getch();
+            printf("Ввод символа %c ",button);
+            printf("(%d)\n",button);
             
             if ((i<26)&&((button>=32)||(button<0)||(button==13))){
                 word[i]=button;
@@ -56,7 +57,7 @@ int InputBox(int x1, int y1, short active, char word[]){
             case 77: break;
             case 72: break;
             case 80: break;
-            case 13: word[i]=0; return 1;  break;
+            case 13: word[i-1]=0; return 1;  break;
             case 27: return 0; break;
             };
         }while(1);
@@ -188,7 +189,7 @@ int VigenereCrypt(char word[]){
     StackFilesPath(output_filename, 1);
     printf("Входной файл %s\n",input_filename);
     printf("Выходной файл %s\n",output_filename);
-        
+    if (strcmp(input_filename,output_filename)==0) return 4;
     printf("Открытие входного файла ");
     if ((input_file=fopen(input_filename,"r")) == NULL){
     printf("Не открыл!");
@@ -243,11 +244,17 @@ void VisenereShowMessage(int result){
         outtextxy(300,180,"Введите");
         outtextxy(300,220,"правильный ключ!"); 
     break;
+    case 4: 
+        outtextxy(300,160,"Файлы не должны");
+        outtextxy(300,200,"совпадать"); 
+        outtextxy(300,240,"по названию!"); 
+    break;
     };
     getch();
 }
 
-void VigenereWindow(){             //подменю зашифровки
+void VigenereWindow(){             //меню зашифровки методом Виженера
+    printf("Шифр Виженера\n");
     char *input_filename, *output_filename, *word, *temp_word; 
     int k=0; 
     input_filename=new char[50];
@@ -266,9 +273,10 @@ void VigenereWindow(){             //подменю зашифровки
         k++;
     }while (options.output_file_name[k-1] != 0);
     k=0;         
-    
+    input_filename=options.input_file_name;
+    output_filename=options.output_file_name;
     int button, point=1;
-    do{
+    do{ 
         cleardevice();
         settextjustify(1,1);
         settextstyle(1,0,5);
@@ -301,19 +309,22 @@ void VigenereWindow(){             //подменю зашифровки
         case 13: 
             switch(point){
             case 1: 
-                if (InputBox(100,110,1,input_filename)) options.input_file_name=input_filename; 
+                InputBox(100,110,1,options.input_file_name); 
                 printf("\n Return: "); 
                 printf("%s ", input_filename); 
+                //for (int i=0; options.input_file_name[i]!=0; i++)printf("%d ",options.input_file_name[i]);
             break;
             case 2: 
-                if (InputBox(100,190,1,output_filename)) options.output_file_name=output_filename; 
+                InputBox(100,190,1,options.output_file_name);
                 printf("\n Return: "); 
-                printf("%s ", output_filename); 
+                printf("%s ", output_filename);
+                //for (int i=0; options.output_file_name[i]!=0; i++)printf("%d ",options.output_file_name[i]);
             break;
             case 3: 
                 if (InputBox(100,270,1,temp_word)) word=temp_word; 
                 printf("\n Return: "); 
                 printf("%s ", word); 
+                for (int i=0; ; i++) if (word[i]==0){word[i]=13; word[i+1]=0; break;}; 
             break;
             case 4: 
                 int result;

@@ -6,7 +6,46 @@ void ColorThemes();
 void ColorSettings();
 void Design();
 void Options();
+void InputPathWindow();
 
+void InputPathWindow(){
+    int button, point=1;
+    do{
+        cleardevice();
+        settextjustify(1,1);
+        settextstyle(1,0,5);
+        setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        outtextxy(300,50,"Смена папки"); 
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        settextstyle(1,0,3); 
+        if (point == 1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        outtextxy(300,100,"Ввести путь");
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        if (point == 2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        outtextxy(300,310,"Назад");
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        outtextxy(300,200,"путь к папке");
+        outtextxy(300,230,"в каталоге программы");
+        outtextxy(300,260,"или полный путь к папке");
+        InputBox(100,120,0,options.file_directory);
+        button=getch();
+        switch(button){
+        case 72: if (point > 1) point--; break;
+        case 80: if (point < 2) point++; break;
+        case 13: 
+            switch(point){
+            case 1: 
+                if (InputBox(100,120,1,options.file_directory)); 
+                //for (int i=0; options.input_file_name[i]!=0; i++)printf("%d ",options.input_file_name[i]);
+            break;
+            case 2: return;
+            };
+        break; 
+        case 27: return;
+        };
+    }while (1);        
+}              
+      
 //изменение цветов в структурах, через временную структуру 
 int TempColor(){          
     setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
@@ -468,14 +507,22 @@ void Options(){
     cleardevice();
     settextstyle(1,0,3);
     settextjustify(1,1);
-    do{ settextstyle(1,0,6);
+    printf("Настройки:\n");
+    printf("Входной файл: %s \n",options.input_file_name);
+    printf("Выходной файл: %s \n",options.output_file_name);
+    printf("Каталог с файлами: %s \n",options.file_directory);
+    printf("Консоль включена: %d \n",options.console_on);
+    
+    do{ 
+        cleardevice();
+        settextstyle(1,0,6);
         setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,100,"ШИФРАТОР"); 
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         settextstyle(1,0,3);   
         outtextxy(300,180,"НАСТРОЙКИ:");    
         if (point == 1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,220,"Изменить папки");
+        outtextxy(300,220,"Изменить рабочую папку");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point == 2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,250,"Настроить оформление");
@@ -483,25 +530,33 @@ void Options(){
         if (point == 3) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,280,"Сбросить настройки");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point == 4) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        if (point == 4) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        if (options.console_on) outtextxy(300,310,"Не отображать консоль");
+        else outtextxy(300,310,"Отображать отладочную консоль");
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        if (point == 5) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
         outtextxy(300,340,"Назад");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         button=getch();
         switch(button){
         case 72: if (point > 1) point--; break;
-        case 80: if (point < 4) point++; break;
+        case 80: if (point < 5) point++; break;
         case 13: 
             switch(point){
             case 1: 
-                  
+                InputPathWindow();  
                 return;
             case 2: 
                 Design();
                 return;
             case 3:
-                RestoreOptions();   
+                RestoreOptionsWindow();   
                 return;      
-            case 4: 
+            case 4:
+                if (options.console_on){options.console_on=0; FreeConsole();}
+                else {options.console_on=1; AllocConsole();};
+                break;
+            case 5: 
                 return;             
             }; break;
         case 27: return;

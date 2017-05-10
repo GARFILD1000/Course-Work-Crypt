@@ -10,9 +10,10 @@
 
 
 struct options{
-    char* input_file_name;
-    char* output_file_name;
-    char* file_directory;
+    char input_file_name[50];
+    char output_file_name[50];
+    char file_directory[100];
+    int console_on;
 };
 struct options options;
 
@@ -66,7 +67,7 @@ int MenuCategory(){              //подменю зашифровки
             if (point!=3) 
                 switch(point){
                 case 1: /* Точка вызова функции шифра цезаря*/ ; break;
-                case 2:  VigenereWindow(); break;
+                case 2:  printf("Шифровка: "); VigenereWindow(); break;
                 case 3: break;
                 };
             cleardevice(); 
@@ -82,7 +83,7 @@ int button, point=1, red=0;
 settextstyle(1,0,3);
 settextjustify(1,1);
 setbkcolor(RGB(bg_color.red,bg_color.green,bg_color.blue));
-    do{ 
+    do{        
         cleardevice();
         settextstyle(1,0,6);
         if (red <250) red++;
@@ -126,6 +127,8 @@ int main(){
     srand(time(NULL));
     setlocale(LC_ALL,"rus");  
     
+    /*
+    
     punkt_color.blue=200;
     punkt_color.green=200;
     punkt_color.red=200;
@@ -149,7 +152,11 @@ int main(){
     options.input_file_name="FileIn.txt";
     options.output_file_name="FileOut.txt";
     options.file_directory="..\\files\\";
+    */
     //FreeConsole();
+    
+    LoadOptions();
+    if (!options.console_on) FreeConsole();
     initwindow(600,400,"Шифратор");
     
     setbkcolor(RGB(bg_color.red,bg_color.green,bg_color.blue));
@@ -162,13 +169,14 @@ int main(){
     MoveWindow(BGI_window,mypoint.x,mypoint.y,608,423,false);  //окно ставится по центру
     
     int menu_choice;
-    do{
+    do{ 
         menu_choice=MainMenu();
         switch (menu_choice){
         case 1: MenuCategory(); break;
         case 2: break;
-        case 3: Options(); break;
-        case 0: return 0;       
-        };       
+        case 3: Options();  break;
+        case 0: return 0;   
+        }; 
+        SaveOptions();       
     }while(1);
 }
