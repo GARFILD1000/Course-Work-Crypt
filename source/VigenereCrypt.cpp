@@ -12,17 +12,18 @@ int InputBox(int x1, int y1, short active, char word[]){
     settextjustify(0,0);
     setfillstyle(0,RGB(bg_color.red,bg_color.green,bg_color.blue));
     bar(x1,y1,x1+400,y1+40);
-    
-    int x=x1+5, y=y1+30, point, i; 
-    if (active){
-        
-        char button;
-        for (i=0; word[i]!=0; i++){
+    char *temp_word;
+    char button;
+    int x=x1+5, y=y1+30, point, i=0, j=0; 
+    for (i=0; word[i]!=0; i++){
             if (word[i]==13){
                 word[i]==0;
                 break;
             };
-        };
+    };
+    if (i>25) while((i-j)!=26) j++;
+    temp_word=&word[0+j];
+    if (active){
         setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         bar(x1,y1,x1+400,y1+40);
         rectangle(x1,y1,x1+400,y1+40);
@@ -31,16 +32,20 @@ int InputBox(int x1, int y1, short active, char word[]){
             bar(x1,y1,x1+400,y1+40);
             rectangle(x1,y1,x1+400,y1+40);
             setcolor(RGB(word_color.red,word_color.green,word_color.blue));
-            outtextxy(x,y,word); 
+            
+            temp_word=&word[0+j];
+            outtextxy(x,y,temp_word); 
             
             button=getch();
             printf("Ввод символа %c ",button);
             printf("(%d)\n",button);
             
-            if ((i<26)&&((button>=32)||(button<0)||(button==13))){
+            if ((i<49)&&((button>=32)||(button<0)||(button==13))){
                 word[i]=button;
                 i++;
-                word[i]=0;    
+                word[i]=0;
+                if (i>25) j++;
+                
             };
             
             switch(button){
@@ -48,7 +53,8 @@ int InputBox(int x1, int y1, short active, char word[]){
                 if (i>=0){
                     word[i]=0; 
                     if (i>0){
-                        i--;
+                        i--; 
+                        if (j>0) j--;
                         word[i]=0;
                     }; 
                 }; 
@@ -57,7 +63,7 @@ int InputBox(int x1, int y1, short active, char word[]){
             case 77: break;
             case 72: break;
             case 80: break;
-            case 13: word[i-1]=0; return 1;  break;
+            case 13: word[i]=0; return 1;  break;
             case 27: return 0; break;
             };
         }while(1);
@@ -65,7 +71,7 @@ int InputBox(int x1, int y1, short active, char word[]){
     else{
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         rectangle(x1,y1,x1+400,y1+40);
-        outtextxy(x,y,word);
+        outtextxy(x,y,temp_word);
         return 0;
     };
 }

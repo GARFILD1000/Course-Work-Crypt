@@ -27,6 +27,7 @@ struct color bg_color, point_color, punkt_color, word_color, temp_color, negativ
 #include "SaveRestore.cpp"
 #include "VigenereCrypt.cpp"
 #include "Options.cpp"
+#include "Cezar.cpp"
 
 
 int MenuCategory(){              //подменю зашифровки
@@ -41,7 +42,7 @@ int MenuCategory(){              //подменю зашифровки
         settextstyle(1,0,3); 
         outtextxy(300,180,"ВЫБОР ШИФРОВКИ:");
         if (point==1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,220,"Цезаря (в разработке)");
+        outtextxy(300,220,"Цезаря");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point==2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,250,"Виженера");
@@ -66,7 +67,7 @@ int MenuCategory(){              //подменю зашифровки
             
             if (point!=3) 
                 switch(point){
-                case 1: /* Точка вызова функции шифра цезаря*/ ; break;
+                case 1:  printf("Шифровка: "); CezarWindow(); break;
                 case 2:  printf("Шифровка: "); VigenereWindow(); break;
                 case 3: break;
                 };
@@ -119,42 +120,11 @@ setbkcolor(RGB(bg_color.red,bg_color.green,bg_color.blue));
         };
         Sleep(10);
     } while(1);  
-  
-    
 }
 
 int main(){
     srand(time(NULL));
     setlocale(LC_ALL,"rus");  
-    
-    /*
-    
-    punkt_color.blue=200;
-    punkt_color.green=200;
-    punkt_color.red=200;
-    
-    word_color.blue=150;
-    word_color.green=150;
-    word_color.red=150;
-    
-    point_color.blue=200;
-    point_color.green=0;
-    point_color.red=0;
-    
-    bg_color.red=0;
-    bg_color.blue=0;
-    bg_color.green=0;
-    
-    negative_color.red=200;
-    negative_color.blue=0;
-    negative_color.green=0;
-    
-    options.input_file_name="FileIn.txt";
-    options.output_file_name="FileOut.txt";
-    options.file_directory="..\\files\\";
-    */
-    //FreeConsole();
-    
     LoadOptions();
     if (!options.console_on) FreeConsole();
     initwindow(600,400,"Шифратор");

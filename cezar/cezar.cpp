@@ -4,15 +4,20 @@
 #define ENG 26
 #define RUS 32
 
-void encrypt (int n)  //функция шифровки
+int encrypt (int n)  //функция шифровки
 {
 	setlocale(LC_ALL, "rus");
     FILE *fp1, *fp2;
-//    ifstream fin(&fp1, "input.txt");
-  //  ifstream fin(&fp2, "output.txt");
-  fp1=fopen("input.txt", "r");
-  fp2=fopen("output.txt", "w");
-
+    if ((f1=fopen(input_filename,"r")) == NULL){
+        printf("Не открыл!");
+        return 1;
+    };
+    printf("Завершено\n");
+    printf("Создание выходного файла ");
+    if ((f2=fopen(output_filename,"w")) == NULL){
+        printf("Не создал!");
+        return 2;
+    };
     int flag;
     char c;
     c = getc(fp1);
@@ -52,6 +57,7 @@ void encrypt (int n)  //функция шифровки
     }
     fclose (fp1);
     fclose (fp2);
+    return 0;
 }
 
 
