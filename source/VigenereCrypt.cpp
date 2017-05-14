@@ -5,6 +5,9 @@ int VigenereProcessingSymbol(int symbol, int key_symbol);
 void StackFilesPath(char filename[],int InOrOut);
 int VigenereCrypt(char word[]);
 void VigenereWindow();
+int CutWord(char word[], char cut_word[], int first, int last);
+int DeleteSymbol(char word[], int num);
+int AddSymbol(char word[], char symbol, int num);
 
 int CutWord(char word[], char cut_word[], int first, int last){
     if (first > last) return 0;
@@ -17,18 +20,28 @@ int CutWord(char word[], char cut_word[], int first, int last){
     return 1;
 }
 
+//функция удаления символа с порядковым номером num 
+//из строки word
+//возвращает 1, если символ был удалён, иначе 0
 int DeleteSymbol(char word[], int num){
+    int i=0;
+    while (word[i]!=0) i++;
+    if (num >= i) return 0;
     for (int i=num; word[i]!=0; i++){
         word[i]=word[i+1];
     };
     return 1;
 }
 
+//функция добавляет символ symbol в строку word
+//после символа с порядковым номером num
+//возвращает 1, если символ добавлен, иначе 0
 int AddSymbol(char word[], char symbol, int num){
     int i=0;
     char temp;
     temp=word[i];
     while (word[i]!=0) i++;
+    if (num > i) return 0;
     while (i>=num){ 
         word[i+1]=word[i];
         i--;
@@ -37,6 +50,10 @@ int AddSymbol(char word[], char symbol, int num){
     return 1;
 }
 
+//функция, изображающая поле ввода строки
+//ввод активен, если параметр active ненулевой
+//позволяет добавлять символы в строку, удалять их клавишей backspase 
+//и перемещаться по вводимой строке клавишами со стрелками
 int InputBox(int x1, int y1, short active, char word[]){
     setlinestyle(0,0,2);
     settextstyle(8,0,2);
@@ -45,78 +62,83 @@ int InputBox(int x1, int y1, short active, char word[]){
     bar(x1,y1,x1+400,y1+40);
     char *temp_word;
     char button;
-    int x=x1+5, y=y1+30, point, i=0, j=0, moving=0, cursor, cursor_x=0; 
-    for (i=0; word[i]!=0; i++){
-            if (word[i]==13){
-                word[i]==0;
+    int x=x1+5, y=y1+30, word_size=0, left_barrier=0, box_size=32; 
+    for (word_size=0; word[word_size]!=0; word_size++){
+            if (word[word_size]==13){
+                word[word_size]==0;
                 break;
             };
     };
-    
-    
-    
-
-    temp_word=new char[33];
-    CutWord(word, temp_word, j, j+31);
-    if (i>32) j=i-32;
-    cursor=i;
-    
+    temp_word=new char[box_size+1];
+    CutWord(word, temp_word, left_barrier, left_barrier+box_size-1);
+    if (word_size > box_size) left_barrier=word_size-box_size;
     if (active){
-        //setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        //bar(x1,y1,x1+400,y1+40);
-        //rectangle(x1,y1,x1+400,y1+40);
+        int cursor=word_size, cursor_x, moving=0; 
+        cursor=word_size;
         do{ 
-            
             setcolor(RGB(point_color.red,point_color.green,point_color.blue));
             bar(x1,y1,x1+400,y1+40);
             rectangle(x1,y1,x1+400,y1+40);
             setcolor(RGB(word_color.red,word_color.green,word_color.blue));
-            cursor_x=x+(cursor-j)*12;
+            cursor_x=x+(cursor-left_barrier)*12;
             line(cursor_x+2,y+5,cursor_x+10,y+5);
-            
-            CutWord(word, temp_word, j, j+31);
-            outtextxy(x,y,temp_word); 
-            
+            CutWord(word, temp_word, left_barrier, left_barrier+box_size-1);
+            outtextxy(x,y,temp_word);  
             button=getch();
             if (moving == 0){
-                printf("Ввод символа %c ",button);
-                printf("(%d)\n",button);
-                if (button == 13) cursor=i;       
-                if ((i<49)&&((button>=32)||(button<0)||(button==13))){
-                    AddSymbol(word,button,cursor);
-                    //word[i]=button;
-                    i++; 
-                    word[i]=0;
-                    if (i>32) j++; 
+                if (button == 13) cursor=word_size;       
+                if ((word_size < 49)&&((button>=32)||(button<0)||(button==13))){
+                    AddSymbol(word, button, cursor);
+                    word_size++; 
+                    word[word_size]=0;
+                    if (word_size>box_size) left_barrier++; 
                     cursor++;
                 };
-            
                 switch(button){
                 case 8: 
-                    if (i>=0){
-                        //word[i]=0; 
+                    if (word_size >= 0){
                         DeleteSymbol(word, cursor-1);
-                        if (i>0){
-                            if (word[0]!=0) i--; 
-                            if (j>0) j--;
+                        if (word_size != 0){
+                            if (word[0] != 0) word_size--; 
+                            if (left_barrier > 0) left_barrier--;
                         };
-                        if (cursor>0) cursor--; 
+                        if (cursor > 0) cursor--; 
                     }; 
                 break;  
-                case 13: word[i-1]=0; return 1;  break;
+                case 13: word[word_size]=0; return 1;  break;
                 case 27: return 0; break;
                 }
             }
             else{
                 switch (button){
-                case 75: if (cursor > j) cursor--; else if (j>0){cursor--; j--;}; break;
-                case 77: if ((cursor<j+32)&&(j+32<=i)) cursor++; else if ((cursor < i)&&((j+32)<i)){cursor++; j++;};  break;
+                case 75: 
+                    if (cursor > left_barrier) cursor--; 
+                    else if (left_barrier > 0){
+                        cursor--; 
+                        left_barrier--;
+                    }; 
+                break;
+                case 77: 
+                    if ((cursor < left_barrier+box_size) && (cursor < word_size)) cursor++; 
+                    else if ((cursor < word_size) && ((left_barrier+box_size) < word_size)){
+                        cursor++; 
+                        left_barrier++;
+                    };  
+                break;
+                case 46:
+                    if (word_size >= 0){
+                        DeleteSymbol(word, cursor);
+                        if (word_size != 0){
+                            if (word[0] != 0) word_size--; 
+                            if (left_barrier > 0) left_barrier--;
+                        };
+                        //if (cursor > 0) cursor--; 
+                    };  
                 case 72: break;
                 case 80: break; 
                 };
                 moving = 0;
             };
-            printf ("Курсор на символе: %d, всего символов: %d\n",cursor,i);
             if (button == 0) moving=1;
             else moving=0; 
         }while(1);
@@ -368,20 +390,21 @@ void VigenereWindow(){             //меню зашифровки методом Виженера
         case 13: 
             switch(point){
             case 1: 
+                printf("Открывается поле ввода\n");
                 InputBox(100,110,1,options.input_file_name); 
-                printf("\n Return: "); 
+                printf("\nВведено: "); 
                 printf("%s ", input_filename); 
-                for (int i=0; options.input_file_name[i]!=0; i++)printf("%d ",options.input_file_name[i]);
             break;
             case 2: 
+                printf("Открывается поле ввода\n");
                 InputBox(100,190,1,options.output_file_name);
-                printf("\n Return: "); 
+                printf("\nВведено: ");
                 printf("%s ", output_filename);
-                //for (int i=0; options.output_file_name[i]!=0; i++)printf("%d ",options.output_file_name[i]);
             break;
-            case 3: 
+            case 3:
+                printf("Открывается поле ввода\n"); 
                 if (InputBox(100,270,1,temp_word)) word=temp_word; 
-                printf("\n Return: "); 
+                printf("\nВведено: "); 
                 printf("%s ", word); 
                 for (int i=0; ; i++) if (word[i]==0){word[i]=13; word[i+1]=0; break;}; 
             break;

@@ -1,3 +1,8 @@
+int SetNumberBox(int x, int y, int active, int &num);
+void CezarWindow();
+int CezarCrypt(int n);
+void decipher (int n);
+void CezarWindow();
 
 #define ENG 26
 #define RUS 32
@@ -26,7 +31,7 @@ int SetNumberBox(int x, int y, int active, int &num){
             button=getch();
             switch(button){
             case 77: num++; break; 
-            case 75: num--; break;
+            case 75: if (num>0) num--; break;
             case 13: return 1;
             case 27: return 0;
             };
@@ -46,8 +51,8 @@ int SetNumberBox(int x, int y, int active, int &num){
     };
 }
 
-int CezarCrypt(int n)  //функция шифровки
-{
+//функция шифровки методом Цезаря
+int CezarCrypt(int n){
 	setlocale(LC_ALL, "rus");
     FILE *fp1, *fp2;
     
@@ -115,8 +120,7 @@ int CezarCrypt(int n)  //функция шифровки
 }
 
 
-void decipher (int n)
-{
+void decipher (int n){
     FILE *fp1, *fp2;
    fp1=fopen("input.txt", "r");
    fp2=fopen("output.txt", "w");
@@ -164,12 +168,10 @@ void decipher (int n)
 //меню зашифровки методом Цезаря
 void CezarWindow(){             
     printf("Шифр Цезаря\n");
-    char *input_filename, *output_filename, *word, *temp_word; 
+    char *input_filename, *output_filename, *word; 
     int k=0, num=1; 
     input_filename=new char[50];
     output_filename=new char[50];
-    temp_word=new char[50];     
-    temp_word[0]=0;
     do{
         input_filename[k]=options.input_file_name[k];
         k++;
@@ -217,19 +219,18 @@ void CezarWindow(){
             switch(point){
             case 1: 
                 InputBox(100,110,1,options.input_file_name); 
-                printf("\n Return: "); 
+                printf("\nВведено: "); 
                 printf("%s \n", input_filename); 
-                //for (int i=0; options.input_file_name[i]!=0; i++)printf("%d ",options.input_file_name[i]);
             break;
             case 2: 
                 InputBox(100,190,1,options.output_file_name);
-                printf("\n Return: "); 
+                printf("\nВведено: ");
                 printf("%s \n", output_filename);
-                //for (int i=0; options.output_file_name[i]!=0; i++)printf("%d ",options.output_file_name[i]);
             break;
             case 3: 
                 SetNumberBox(250,270,1,num);
-                printf("\n Return: %d \n",num);
+                printf("\nВведено: ");
+                printf("%d \n", num);
             break;
             case 4: 
                 int result;

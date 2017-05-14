@@ -2,7 +2,7 @@ void RestoreOptions();
 void RestoreOptionsWindow();
 void SaveOptions();
 void LoadOptions();
-//   процедура заполняет структуры с натройками изначальными значениями
+//   процедура заполняет структуры с натройками стандартными значениями
 void RestoreOptions(){
 FILE *options_file;
     if ((options_file=fopen("..//saves//default.dat","rb"))==NULL)
@@ -17,6 +17,7 @@ FILE *options_file;
     return;
 }
 
+//процедура, отрисовывающая окно подтверждения сброса настроек 
 void RestoreOptionsWindow(){
     int point=1, button; 
     do{ cleardevice();

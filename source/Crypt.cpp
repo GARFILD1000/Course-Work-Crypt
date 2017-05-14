@@ -27,10 +27,10 @@ struct color bg_color, point_color, punkt_color, word_color, temp_color, negativ
 #include "SaveRestore.cpp"
 #include "VigenereCrypt.cpp"
 #include "Options.cpp"
-#include "Cezar.cpp"
+#include "CezarCrypt.cpp"
 
-
-int MenuCategory(){              //подменю зашифровки
+//подменю зашифровки
+int MenuCategory(){              
     int button, point=1;
     setcolor(15);
     do{
