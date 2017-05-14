@@ -6,66 +6,119 @@ void StackFilesPath(char filename[],int InOrOut);
 int VigenereCrypt(char word[]);
 void VigenereWindow();
 
+int CutWord(char word[], char cut_word[], int first, int last){
+    if (first > last) return 0;
+    int j=0;
+    for (int i=first; i <= last; i++){ 
+        cut_word[j]=word[i];    
+        j++;
+    };
+    cut_word[j]=0;
+    return 1;
+}
+
+int DeleteSymbol(char word[], int num){
+    for (int i=num; word[i]!=0; i++){
+        word[i]=word[i+1];
+    };
+    return 1;
+}
+
+int AddSymbol(char word[], char symbol, int num){
+    int i=0;
+    char temp;
+    temp=word[i];
+    while (word[i]!=0) i++;
+    while (i>=num){ 
+        word[i+1]=word[i];
+        i--;
+    };
+    word[num]=symbol;
+    return 1;
+}
+
 int InputBox(int x1, int y1, short active, char word[]){
     setlinestyle(0,0,2);
-    settextstyle(3,0,2);
+    settextstyle(8,0,2);
     settextjustify(0,0);
     setfillstyle(0,RGB(bg_color.red,bg_color.green,bg_color.blue));
     bar(x1,y1,x1+400,y1+40);
     char *temp_word;
     char button;
-    int x=x1+5, y=y1+30, point, i=0, j=0; 
+    int x=x1+5, y=y1+30, point, i=0, j=0, moving=0, cursor, cursor_x=0; 
     for (i=0; word[i]!=0; i++){
             if (word[i]==13){
                 word[i]==0;
                 break;
             };
     };
-    if (i>25) while((i-j)!=26) j++;
-    temp_word=&word[0+j];
+    
+    
+    
+
+    temp_word=new char[33];
+    CutWord(word, temp_word, j, j+31);
+    if (i>32) j=i-32;
+    cursor=i;
+    
     if (active){
-        setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        bar(x1,y1,x1+400,y1+40);
-        rectangle(x1,y1,x1+400,y1+40);
+        //setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        //bar(x1,y1,x1+400,y1+40);
+        //rectangle(x1,y1,x1+400,y1+40);
         do{ 
+            
             setcolor(RGB(point_color.red,point_color.green,point_color.blue));
             bar(x1,y1,x1+400,y1+40);
             rectangle(x1,y1,x1+400,y1+40);
             setcolor(RGB(word_color.red,word_color.green,word_color.blue));
+            cursor_x=x+(cursor-j)*12;
+            line(cursor_x+2,y+5,cursor_x+10,y+5);
             
-            temp_word=&word[0+j];
+            CutWord(word, temp_word, j, j+31);
             outtextxy(x,y,temp_word); 
             
             button=getch();
-            printf("Ввод символа %c ",button);
-            printf("(%d)\n",button);
+            if (moving == 0){
+                printf("Ввод символа %c ",button);
+                printf("(%d)\n",button);
+                if (button == 13) cursor=i;       
+                if ((i<49)&&((button>=32)||(button<0)||(button==13))){
+                    AddSymbol(word,button,cursor);
+                    //word[i]=button;
+                    i++; 
+                    word[i]=0;
+                    if (i>32) j++; 
+                    cursor++;
+                };
             
-            if ((i<49)&&((button>=32)||(button<0)||(button==13))){
-                word[i]=button;
-                i++;
-                word[i]=0;
-                if (i>25) j++;
-                
-            };
-            
-            switch(button){
-            case 8: 
-                if (i>=0){
-                    word[i]=0; 
-                    if (i>0){
-                        i--; 
-                        if (j>0) j--;
-                        word[i]=0;
+                switch(button){
+                case 8: 
+                    if (i>=0){
+                        //word[i]=0; 
+                        DeleteSymbol(word, cursor-1);
+                        if (i>0){
+                            if (word[0]!=0) i--; 
+                            if (j>0) j--;
+                        };
+                        if (cursor>0) cursor--; 
                     }; 
-                }; 
-            break; 
-            case 75: break;
-            case 77: break;
-            case 72: break;
-            case 80: break;
-            case 13: word[i]=0; return 1;  break;
-            case 27: return 0; break;
+                break;  
+                case 13: word[i-1]=0; return 1;  break;
+                case 27: return 0; break;
+                }
+            }
+            else{
+                switch (button){
+                case 75: if (cursor > j) cursor--; else if (j>0){cursor--; j--;}; break;
+                case 77: if ((cursor<j+32)&&(j+32<=i)) cursor++; else if ((cursor < i)&&((j+32)<i)){cursor++; j++;};  break;
+                case 72: break;
+                case 80: break; 
+                };
+                moving = 0;
             };
+            printf ("Курсор на символе: %d, всего символов: %d\n",cursor,i);
+            if (button == 0) moving=1;
+            else moving=0; 
         }while(1);
     }
     else{
@@ -318,7 +371,7 @@ void VigenereWindow(){             //меню зашифровки методом Виженера
                 InputBox(100,110,1,options.input_file_name); 
                 printf("\n Return: "); 
                 printf("%s ", input_filename); 
-                //for (int i=0; options.input_file_name[i]!=0; i++)printf("%d ",options.input_file_name[i]);
+                for (int i=0; options.input_file_name[i]!=0; i++)printf("%d ",options.input_file_name[i]);
             break;
             case 2: 
                 InputBox(100,190,1,options.output_file_name);
