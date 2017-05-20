@@ -1,7 +1,7 @@
 int SetNumberBox(int x, int y, int active, int &num);
 void CezarWindow();
 int CezarCrypt(int n);
-void decipher (int n);
+void CesarDecrypt(int n);
 void CezarWindow();
 
 #define ENG 26
@@ -51,7 +51,7 @@ int SetNumberBox(int x, int y, int active, int &num){
     };
 }
 
-//функция шифровки методом Цезаря
+//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 int CezarCrypt(int n){
 	setlocale(LC_ALL, "rus");
     FILE *fp1, *fp2;
@@ -62,20 +62,20 @@ int CezarCrypt(int n){
     output_filename=new char[100];
     StackFilesPath(input_filename, 0);
     StackFilesPath(output_filename, 1);
-    printf("Входной файл %s\n",input_filename);
-    printf("Выходной файл %s\n",output_filename);
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ %s\n",input_filename);
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ %s\n",output_filename);
     if ((fp1=fopen(input_filename,"r")) == NULL){
-        printf("Не открыл!");
+        printf("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
         return 1;
     };
-    printf("Завершено\n");
-    printf("Создание выходного файла ");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ");
     if ((fp2=fopen(output_filename,"w")) == NULL){
-        printf("Не создал!");
+        printf("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
         return 2;
     };
-    printf("Завершено\n");
-    printf("Шифровка началась...\n");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\n");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...\n");
     int flag;
     char c;
     c = getc(fp1);
@@ -96,31 +96,31 @@ int CezarCrypt(int n){
             fprintf (fp2, "%c", c);
             flag = 1;
         }
-        if (c >= 'А' && c <= 'Я')
+        if (c >= 'пїЅ' && c <= 'пїЅ')
         {
             c = c + (n % RUS);
-            if (c > 'Я') c = 'А' + (c - 'Я') - 1;
+            if (c > 'пїЅ') c = 'пїЅ' + (c - 'пїЅ') - 1;
             fprintf (fp2, "%c", c);
             flag = 1;
         }
-        if (c>='а' && c<='я')
+        if (c>='пїЅ' && c<='пїЅ')
         {
             c = c + (n % RUS);
-            if (c > 'я') c = 'а' + (c - 'я') - 1;
+            if (c > 'пїЅ') c = 'пїЅ' + (c - 'пїЅ') - 1;
             fprintf (fp2, "%c", c);
             flag = 1;
         }
         if (!flag) fprintf (fp2, "%c", c);
         c = getc(fp1);
     }
-    printf("Зашифровано!\n");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!\n");
     fclose (fp1);
     fclose (fp2);
     return 0;
 }
 
 
-void decipher (int n){
+void CesarDecrypt (int n){
     FILE *fp1, *fp2;
    fp1=fopen("input.txt", "r");
    fp2=fopen("output.txt", "w");
@@ -144,17 +144,17 @@ void decipher (int n){
             fprintf (fp2, "%c", c);
             flag = 1;
         }
-        if (c >= 'А' && c <= 'Я')
+        if (c >= 'пїЅ' && c <= 'пїЅ')
         {
             c = c - (n % RUS);
-            if (c < 'А') c = 'Я' - ('А' - c) + 1;
+            if (c < 'пїЅ') c = 'пїЅ' - ('пїЅ' - c) + 1;
             fprintf (fp2, "%c", c);
             flag = 1;
         }
-        if (c >= 'а' && c <= 'я')
+        if (c >= 'пїЅ' && c <= 'пїЅ')
         {
             c = c - (n % RUS);
-            if (c < 'а') c = 'я' - ('а' - c) + 1;
+            if (c < 'пїЅ') c = 'пїЅ' - ('пїЅ' - c) + 1;
             fprintf (fp2, "%c", c);
             flag = 1;
         }
@@ -165,9 +165,9 @@ void decipher (int n){
     fclose (fp2);
 }
 
-//меню зашифровки методом Цезаря
+//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 void CezarWindow(){             
-    printf("Шифр Цезаря\n");
+    printf("пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ\n");
     char *input_filename, *output_filename, *word; 
     int k=0, num=1; 
     input_filename=new char[50];
@@ -190,23 +190,23 @@ void CezarWindow(){
         settextjustify(1,1);
         settextstyle(1,0,5);
         setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
-        outtextxy(300,50,"Шифр Цезаря"); 
+        outtextxy(300,50,"пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"); 
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         settextstyle(1,0,3); 
         if (point == 1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,100,"Назовите исходный файл");
+        outtextxy(300,100,"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point == 2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,180,"Назовите зашифрованный файл");
+        outtextxy(300,180,"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point == 3) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,260,"Введите ключ шифра");
+        outtextxy(300,260,"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point == 4) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,340,"Зашифровать!");
+        outtextxy(300,340,"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point == 5) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
-        outtextxy(300,370,"Назад");
+        outtextxy(300,370,"пїЅпїЅпїЅпїЅпїЅ");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         InputBox(100,110,0,options.input_file_name);
         InputBox(100,190,0,options.output_file_name);
@@ -219,17 +219,17 @@ void CezarWindow(){
             switch(point){
             case 1: 
                 InputBox(100,110,1,options.input_file_name); 
-                printf("\nВведено: "); 
+                printf("\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: "); 
                 printf("%s \n", input_filename); 
             break;
             case 2: 
                 InputBox(100,190,1,options.output_file_name);
-                printf("\nВведено: ");
+                printf("\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ");
                 printf("%s \n", output_filename);
             break;
             case 3: 
                 SetNumberBox(250,270,1,num);
-                printf("\nВведено: ");
+                printf("\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ");
                 printf("%d \n", num);
             break;
             case 4: 
