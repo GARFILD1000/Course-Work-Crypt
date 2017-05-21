@@ -9,6 +9,81 @@ int CutWord(char word[], char cut_word[], int first, int last);
 int DeleteSymbol(char word[], int num);
 int AddSymbol(char word[], char symbol, int num);
 
+
+int WordToCache(char word[]){
+    FILE *cache_file; 
+    FILE *temp_file;
+    char symbol;
+    int num=1, i=0;
+    if ((cache_file=fopen("..\\saves\\cache.txt","r+"))==NULL){
+        printf("Файл с кэшем не открылся ");
+        fclose(cache_file);
+        cache_file=fopen("..\\saves\\cache.txt","w+");
+        printf("создался новый\n");
+    };
+    if ((word[0] == 13)||(word[0] == 0)){
+        fclose(cache_file);
+        return 0;
+    };
+    temp_file=fopen("..\\saves\\temp_cache.txt","w+");
+    while(word[i] != 0){
+        fputc(word[i],temp_file);
+        i++;
+    };
+    fputc(10,temp_file);
+    while((symbol=fgetc(cache_file)) != EOF){
+        fputc(symbol,temp_file);
+    };
+    //rewind(cache_file);
+    //rewind(temp_file);
+    //while((symbol=fgetc(temp_file)) != EOF){
+    //    fputc(symbol,cache_file);
+    //};
+    fclose(cache_file);
+    fclose(temp_file);
+    if (remove("..\\saves\\cache.txt")){
+        printf("Ошибка удаления\n"); 
+        perror("Проблема в ");
+    };
+    if (rename("..\\saves\\temp_cache.txt","..\\saves\\cache.txt")) printf("Oшибка переименования\n");
+    return 1;    
+}
+
+int WordFromCache(char word[], int num_of_word){
+    FILE *cache_file;
+    char symbol;
+    int num=1, i=0;
+    if (num_of_word <= 0) return 0;
+    if ((cache_file=fopen("..\\saves\\cache.txt","r"))==NULL){
+        printf("Файла с кэшем нет,создаётся новый... ");
+        fclose(cache_file);
+        cache_file=fopen("..\\saves\\cache.txt","w");
+        printf("создано!\n");
+        fclose(cache_file);
+        return 0;
+    };
+    if (num < num_of_word){
+        while((symbol=fgetc(cache_file)) != EOF){
+            if (symbol == 10){ 
+                num++;
+                if (num == num_of_word) break;
+            };
+        };
+    };
+    if (num < num_of_word){ 
+        fclose(cache_file);
+        return 0;
+    };
+    while((symbol=fgetc(cache_file)) != EOF){
+        if (symbol == 10) break;
+        word[i]=symbol;
+        i++;
+    };
+    word[i-1]=0;
+    fclose(cache_file);
+    return 1;    
+}
+
 int CutWord(char word[], char cut_word[], int first, int last){
     if (first > last) return 0;
     int j=0;
@@ -71,11 +146,13 @@ int InputBox(int x1, int y1, short active, char word[]){
     };
     temp_word=new char[box_size+1];
     CutWord(word, temp_word, left_barrier, left_barrier+box_size-1);
-    if (word_size > box_size) left_barrier=word_size-box_size;
+    
     if (active){
-        int cursor=word_size, cursor_x, moving=0; 
-        cursor=word_size;
+        int cursor, cursor_x, moving=0, num_of_word=0; 
+        if (word_size > box_size) left_barrier=word_size-box_size;
+            cursor=word_size-left_barrier;
         do{ 
+            
             setcolor(RGB(point_color.red,point_color.green,point_color.blue));
             bar(x1,y1,x1+400,y1+40);
             rectangle(x1,y1,x1+400,y1+40);
@@ -96,7 +173,7 @@ int InputBox(int x1, int y1, short active, char word[]){
                 };
                 switch(button){
                 case 8: 
-                    if (word_size >= 0){
+                    if ((word_size >= 0)&&(cursor !=0)){
                         DeleteSymbol(word, cursor-1);
                         if (word_size != 0){
                             if (word[0] != 0) word_size--; 
@@ -105,8 +182,11 @@ int InputBox(int x1, int y1, short active, char word[]){
                         if (cursor > 0) cursor--; 
                     }; 
                 break;  
-                case 13: word[word_size]=0; return 1;  break;
-                case 27: return 0; break;
+                case 13: 
+                    word[word_size]=0; 
+                    WordToCache(word); 
+                    return 1;
+                case 27: return 0;
                 }
             }
             else{
@@ -134,8 +214,27 @@ int InputBox(int x1, int y1, short active, char word[]){
                         };
                         //if (cursor > 0) cursor--; 
                     };  
-                case 72: break;
-                case 80: break; 
+                case 72: 
+                    if (WordFromCache(word,num_of_word+1)) num_of_word++; 
+                    for (word_size=0; word[word_size]!=0; word_size++);
+                    cursor=box_size;
+                    printf("Номер слова из кэша %d \n",num_of_word);  
+                    if (word_size > box_size) left_barrier=word_size-box_size;
+                    else left_barrier=0;
+                    cursor=word_size;
+                break;
+                case 80: 
+                    if (num_of_word > 0){ 
+                        num_of_word--;
+                        WordFromCache(word,num_of_word); 
+                        if (num_of_word == 0) word[0]=0;
+                        for (word_size=0; word[word_size]!=0; word_size++);
+                        if (word_size > box_size) left_barrier=word_size-box_size;
+                        else left_barrier=0;
+                        cursor=word_size;
+                        printf("Номер слова из кэша %d \n",num_of_word);
+                    }; 
+                break; 
                 };
                 moving = 0;
             };
@@ -403,7 +502,7 @@ void VigenereWindow(){             //меню зашифровки методом Виженера
             break;
             case 3:
                 printf("Открывается поле ввода\n"); 
-                if (InputBox(100,270,1,temp_word)) word=temp_word; 
+                if (InputBox(100,270,1,temp_word)) word=temp_word;
                 printf("\nВведено: "); 
                 printf("%s ", word); 
                 for (int i=0; ; i++) if (word[i]==0){word[i]=13; word[i+1]=0; break;}; 
