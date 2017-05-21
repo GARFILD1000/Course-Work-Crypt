@@ -34,11 +34,6 @@ int WordToCache(char word[]){
     while((symbol=fgetc(cache_file)) != EOF){
         fputc(symbol,temp_file);
     };
-    //rewind(cache_file);
-    //rewind(temp_file);
-    //while((symbol=fgetc(temp_file)) != EOF){
-    //    fputc(symbol,cache_file);
-    //};
     fclose(cache_file);
     fclose(temp_file);
     if (remove("..\\saves\\cache.txt")){
@@ -260,7 +255,8 @@ int CheckSymbolLang(int symbol){
     else return 0;
 }
 
-int VigenereProcessingSymbol(int symbol, int key_symbol){
+//функция, сдвигающая символ symbol вправо по алфавиту на величину key_symbol
+int VigenereCryptProcessing(int symbol, int key_symbol){
     int lang;
     lang = CheckSymbolLang(symbol);
     
@@ -339,6 +335,7 @@ void StackFilesPath(char filename[],int InOrOut){
     
 };
 
+
 //функция шифровки методом Виженера, получает на вход слово - ключ шифра
 int VigenereCrypt(char word[]){
     FILE *input_file;
@@ -386,7 +383,7 @@ int VigenereCrypt(char word[]){
     printf("Шифровка началась...\n");
     while((symbol=fgetc(input_file))!=EOF){
         //printf(" (%c %d) ",symbol, symbol);
-        symbol=VigenereProcessingSymbol(symbol,key[i]); 
+        symbol=VigenereCryptProcessing(symbol,key[i]); 
         //printf("=> (%c %d) \n",symbol, symbol);
         fputc(symbol,output_file);
         if (CheckSymbolLang(symbol)!=0){
@@ -401,7 +398,7 @@ int VigenereCrypt(char word[]){
 };
 
 //выводит сообщение на экран в зависимости от результата работы функции VisenereCrypt
-void VisenereShowMessage(int result){
+void ShowMessage(int result){
     settextjustify(1,1);
     settextstyle(1,0,3);
     bar(100,100,500,300);
@@ -429,12 +426,14 @@ void VisenereShowMessage(int result){
         outtextxy(300,200,"совпадать"); 
         outtextxy(300,240,"по названию!"); 
     break;
+    case 5: 
+        outtextxy(300,200,"Расшифровано!"); 
+    break;
     };
     getch();
 }
 
-void VigenereWindow(){             //меню зашифровки методом Виженера
-    printf("Шифр Виженера\n");
+void VigenereCryptWindow(){             //меню зашифровки методом Виженера
     char *input_filename, *output_filename, *word, *temp_word; 
     int k=0; 
     input_filename=new char[50];
@@ -510,7 +509,7 @@ void VigenereWindow(){             //меню зашифровки методом Виженера
             case 4: 
                 int result;
                 result = VigenereCrypt(word);
-                VisenereShowMessage(result);
+                ShowMessage(result);
             break;
             case 5: return; 
             };      

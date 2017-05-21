@@ -26,11 +26,62 @@ struct color bg_color, point_color, punkt_color, word_color, temp_color, negativ
 
 #include "SaveRestore.cpp"
 #include "VigenereCrypt.cpp"
+#include "VigenereDecrypt.cpp"
 #include "Options.cpp"
 #include "CezarCrypt.cpp"
+#include "CezarDecrypt.cpp"
+
+int MenuDecryptCategory(){              
+    int button, point=1;
+    setcolor(15);
+    do{
+        cleardevice();
+        settextstyle(1,0,6);
+        setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        outtextxy(300,100,"ШИФРАТОР"); 
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        settextstyle(1,0,3); 
+        outtextxy(300,180,"ВЫБОР РАСШИФРОВКИ:");
+        if (point==1) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        outtextxy(300,220,"Цезаря");
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        if (point==2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        outtextxy(300,250,"Виженера");
+        /*setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        if (point==3) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        outtextxy(300,280,"");
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        if (point==4) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        outtextxy(300,310,"");
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        if (point==5) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        outtextxy(300,340,"");*/
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        if (point==3) setcolor(RGB(negative_color.red,negative_color.green,negative_color.blue));
+        outtextxy(300,370,"Назад");
+        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
+        button=getch();
+        switch(button){
+        case 72: if (point>1) point--; break;
+        case 80: if (point<3) point++; break;
+        case 13: 
+            
+            if (point!=3) 
+                switch(point){
+                case 1:  printf("Расшифровка Цезаря"); CezarDecryptWindow(); break;
+                case 2:  printf("Расшифровка Виженера"); VigenereDecryptWindow(); 
+                break;
+                case 3: break;
+                };
+            cleardevice(); 
+            return 0;       
+        case 27: cleardevice(); return 0;
+        };
+    } while(1);        
+}
 
 //подменю зашифровки
-int MenuCategory(){              
+int MenuCryptCategory(){              
     int button, point=1;
     setcolor(15);
     do{
@@ -67,8 +118,8 @@ int MenuCategory(){
             
             if (point!=3) 
                 switch(point){
-                case 1:  printf("Шифровка: "); CezarWindow(); break;
-                case 2:  printf("Шифровка: "); VigenereWindow(); break;
+                case 1:  printf("Шифровка Цезаря"); CezarCryptWindow(); break;
+                case 2:  printf("Шифровка Виженера"); VigenereCryptWindow(); break;
                 case 3: break;
                 };
             cleardevice(); 
@@ -97,7 +148,7 @@ setbkcolor(RGB(bg_color.red,bg_color.green,bg_color.blue));
         outtextxy(300,250,"Зашифровать");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point==2) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,280,"Прочее...");
+        outtextxy(300,280,"Расшифровать");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
         if (point==3) setcolor(RGB(point_color.red,point_color.green,point_color.blue));
         outtextxy(300,310,"Настройки");
@@ -142,8 +193,8 @@ int main(){
     do{ 
         menu_choice=MainMenu();
         switch (menu_choice){
-        case 1: MenuCategory(); break;
-        case 2: break;
+        case 1: MenuCryptCategory(); break;
+        case 2: MenuDecryptCategory(); break;
         case 3: Options();  break;
         case 0: return 0;   
         }; 
