@@ -1,3 +1,23 @@
+Мысли.txt
+InputFile.txt
+../files/
+абв
+Мысли.txt
+Мысли.txt
+InputFile.txt
+OutputFile.txt
+InputFile.txt
+OutputFile.txt
+InputFile.txt
+OutputFile.txt
+InputFile.txt
+OutputFile.txt
+InputFile.txt
+OutputFile.txt
+InputFile.txt
+InputFile.txt
+OutputFile.txt
+OutputFile.txt
 Зашифрованные Виженером мысли.txt
 Зашифрованный.txt
 Расшифрованный.txt
