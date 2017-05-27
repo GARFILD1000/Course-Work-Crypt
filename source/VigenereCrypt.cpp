@@ -6,6 +6,16 @@ int VigenereCrypt(char word[]);
 void VigenereWindow();
 void ShowMessage(int result);
 
+int CopyString(char string[], char copy[]){
+    int i = 0;
+    while (string[i] != 0){
+        copy[i] = string[i];
+        i++;
+    };
+    copy[i] = string[i];
+    return 1;
+}
+
 //функция проверки символа на соответствие английскому или русскому алфавиту
 //на вход получает номер сивола в таблице ASCII
 //возвращает 1, если символ - русскоязычная буква
@@ -243,6 +253,7 @@ void ShowMessage(int result) {
     getch();
 }
 
+
 //меню зашифровки методом Виженера
 void VigenereCryptWindow() {
     char *input_filename, *output_filename, *word, *temp_word;
@@ -320,7 +331,15 @@ void VigenereCryptWindow() {
             switch (point) {
             case 1:
                 printf("Открывается поле ввода\n");
+                char *temp_string;
+                //файл, в который загрузится список файлов
+                temp_string = "..\\saves\\filelist.txt";  
+                CopyString(temp_string, options.cache_file_name);  
+                //запуск батника, который заполнит файл списком файлов
+                ShellExecute(FindWindow(NULL, "Шифратор"), "open", "..\\binary\\MakeFileList.bat", NULL, NULL, SW_HIDE);
                 InputBox(100, 110, 1, options.input_file_name);
+                temp_string = "..\\saves\\cache.txt";
+                CopyString(temp_string, options.cache_file_name);
                 printf("\nВведено: ");
                 printf("%s ", input_filename);
                 break;

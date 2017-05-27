@@ -7,6 +7,40 @@ void ColorSettings();
 void Design();
 void Options();
 void InputPathWindow();
+ 
+
+void ChangeBatDirectory(){
+    
+    FILE *bat_file, *temp_file;
+    int i=0, symbol;
+    char command[100];
+    
+    command[0] = 'c';
+    command[1] = 'd';
+    command[2] = ' ';
+    while (options.file_directory[i] != 0){
+        command[i+3] = options.file_directory[i];
+        i++;
+    };
+    command[i+3] = options.file_directory[i];
+    printf("Открытие батника ");
+    if ((bat_file = fopen("..\\binary\\MakeFileList.bat", "rt+")) == NULL){
+        printf("прервано!");              
+    };
+    printf("Завершено\n");
+    temp_file = fopen("..\\binary\\temp.txt", "wt+");
+    while (fgetc(bat_file) != 10);
+    fputs(command,temp_file);
+    fputc(10, temp_file);
+    while ((symbol = fgetc(bat_file)) != EOF){
+        fputc(symbol, temp_file);
+    };
+    fclose(temp_file);
+    fclose(bat_file);
+    remove("..\\binary\\MakeFileList.bat");
+    rename("..\\binary\\temp.txt","..\\binary\\MakeFileList.bat");
+    return;
+}
 
 void InputPathWindow() {
     int button, point = 1;
@@ -48,12 +82,10 @@ void InputPathWindow() {
         case 13:
             switch (point) {
             case 1:
-                if (InputBox(100, 120, 1, options.file_directory))
-                    ;
-                // for (int i=0; options.input_file_name[i]!=0; i++)printf("%d
-                // ",options.input_file_name[i]);
+                if (InputBox(100, 120, 1, options.file_directory));
                 break;
             case 2:
+                ChangeBatDirectory();
                 return;
             };
             break;
@@ -685,6 +717,7 @@ void Options() {
     printf("Настройки:\n");
     printf("Входной файл: %s \n", options.input_file_name);
     printf("Выходной файл: %s \n", options.output_file_name);
+    printf("Файл с кэшем: %s \n", options.cache_file_name);
     printf("Каталог с файлами: %s \n", options.file_directory);
     printf("Консоль включена: %d \n", options.console_on);
 

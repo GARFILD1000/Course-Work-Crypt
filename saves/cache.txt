@@ -1,3 +1,22 @@
+OutputFile.txt
+OutputFile.txt
+InputFile.txt
+абв
+Расшифрованные мысли.txt
+OutputFile.txt
+абв
+OutputFile.txt
+кукушка
+кукушка
+кукушка
+прочёл
+InputFile.txt
+InputFile.txt
+а что не так
+а что не так
+процесс
+ghj
+..//saves//cache.txt
 Мысли.txt
 InputFile.txt
 ../files/

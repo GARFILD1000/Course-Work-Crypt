@@ -13,6 +13,7 @@ typedef struct Options {
     char output_file_name[50];
     char file_directory[100];
     int console_on;
+    char cache_file_name[50];
 };
 Options options;
 
@@ -111,7 +112,6 @@ int MenuDecryptCategory() {
 //подменю зашифровки
 int MenuCryptCategory() {
     int button, point = 1;
-    setcolor(15);
     do {
         cleardevice();
         settextstyle(1, 0, 6);
@@ -260,13 +260,14 @@ int main() {
     if (!options.console_on) {
         FreeConsole();
     };
+
     initwindow(600, 400, "Ўифратор");
 
     setbkcolor(RGB(bg_color.red, bg_color.green, bg_color.blue));
 
     cleardevice();
-
-    POINT mypoint;//класс координат точки
+//класс координат точки    
+    POINT mypoint;
 //находитс€ точка диспле€, где расположитс€ окно
     mypoint.x = getmaxwidth() / 2 - 300;
     mypoint.y = getmaxheight() / 2 - 200;
@@ -274,7 +275,7 @@ int main() {
     HWND BGI_window = FindWindow(NULL, "Ўифратор");
 //окно ставитс€ по центру    
     MoveWindow(BGI_window, mypoint.x, mypoint.y, 608, 423, false);
-
+    
     int menu_choice;
     do {
         menu_choice = MainMenu();

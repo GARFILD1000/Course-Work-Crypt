@@ -10,17 +10,17 @@ int WordToCache(char word[]) {
     FILE *temp_file;
     char symbol;
     int num = 1, i = 0;
-    if ((cache_file = fopen("..\\saves\\cache.txt", "r+")) == NULL) {
+    if ((cache_file = fopen(options.cache_file_name, "r+")) == NULL) {
         printf("Файл с кэшем не открылся ");
         fclose(cache_file);
-        cache_file = fopen("..\\saves\\cache.txt", "w+");
+        cache_file = fopen(options.cache_file_name, "w+");
         printf("создался новый\n");
     };
     if ((word[0] == 13) || (word[0] == 0)) {
         fclose(cache_file);
         return 0;
     };
-    temp_file = fopen("..\\saves\\temp_cache.txt", "w+");
+    temp_file = fopen("..//saves//temp_file.txt", "w+");
     while (word[i] != 0) {
         fputc(word[i], temp_file);
         i++;
@@ -31,11 +31,11 @@ int WordToCache(char word[]) {
     };
     fclose(cache_file);
     fclose(temp_file);
-    if (remove("..\\saves\\cache.txt")) {
+    if (remove(options.cache_file_name)) {
         printf("Ошибка удаления\n");
         perror("Проблема в ");
     };
-    if (rename("..\\saves\\temp_cache.txt", "..\\saves\\cache.txt"))
+    if (rename("..//saves//temp_file.txt", options.cache_file_name))
         printf("Oшибка переименования\n");
     return 1;
 }
@@ -46,11 +46,12 @@ int WordFromCache(char word[], int num_of_word) {
     int num = 1, i = 0;
     if (num_of_word <= 0)
         return 0;
-    if ((cache_file = fopen("..\\saves\\cache.txt", "r")) == NULL) {
+    if ((cache_file = fopen(options.cache_file_name, "r")) == NULL) {
         printf("Файла с кэшем нет,создаётся новый... ");
         fclose(cache_file);
-        cache_file = fopen("..\\saves\\cache.txt", "w");
+        cache_file = fopen(options.cache_file_name, "w");
         printf("создано!\n");
+        fputc(0, cache_file);
         fclose(cache_file);
         return 0;
     };
@@ -75,7 +76,7 @@ int WordFromCache(char word[], int num_of_word) {
         word[i] = symbol;
         i++;
     };
-    word[i - 1] = 0;
+    word[i] = 0;
     fclose(cache_file);
     return 1;
 }
@@ -197,7 +198,7 @@ int InputBox(int x1, int y1, short active, char word[]) {
                     };
                     break;
                 case 13:
-                    word[word_size] = 0;
+                    word[word_size-1] = 0;
                     WordToCache(word);
                     return 1;
                 case 27:

@@ -210,16 +210,27 @@ void CezarCryptWindow() {
         case 13:
             switch (point) {
             case 1:
+                printf("Открывается поле ввода\n");
+                char *temp_string;
+                //файл, в который загрузится список файлов
+                temp_string = "..\\saves\\filelist.txt";  
+                CopyString(temp_string, options.cache_file_name);  
+                //запуск батника, который заполнит файл списком файлов
+                ShellExecute(FindWindow(NULL, "Шифратор"), "open", "MakeFileList.bat", NULL, NULL, SW_SHOW);
                 InputBox(100, 110, 1, options.input_file_name);
+                temp_string = "..\\saves\\cache.txt";
+                CopyString(temp_string, options.cache_file_name); 
                 printf("\nВведено: ");
                 printf("%s \n", input_filename);
                 break;
             case 2:
+                printf("Открывается поле ввода\n");
                 InputBox(100, 190, 1, options.output_file_name);
                 printf("\nВведено: ");
                 printf("%s \n", output_filename);
                 break;
             case 3:
+                printf("Активируется объект SetNumber\n");
                 SetNumberBox(250, 270, 1, num);
                 printf("\nВведено: ");
                 printf("%d \n", num);
