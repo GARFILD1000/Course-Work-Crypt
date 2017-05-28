@@ -1,3 +1,57 @@
+OutputFile.txt
+OutputFile.txt
+..\files\
+Рас.txt
+ключ
+ключ
+абв
+Зашифрованные мысли.txt
+Зашифрованные мысли.txt
+Зашифрованные мысли.txt
+абв
+Рас.txt
+Расшифрованные мысли.txt
+Зашифрованные мысли.txt
+..\files\
+..\files\path\
+Расшифрованные мысли.txt
+Расшифрованные мысли.txt
+Зашифрованные мысли.txt
+Расшифрованные мысли.txt
+filelist2.txt
+Зашифрованные мысли.txt
+Зашифрованный.txt
+..\files\
+..\files
+..\files\
+..\files
+D:\Тексты\
+D:\Тексты\Шифровка\
+..\files\
+..\files\
+D:\Тексты\Шифровка\
+D:\
+D:\Тексты\Шифровка\
+D:\
+..\files\
+a
+filelist2.txt
+filelist2.txt
+filelist2.txt
+a
+a
+filelist2.txt
+filelist2.txt
+а
+filelist2.txt
+filelist2.tst
+D:\
+D:\
+D:\
+D:\
+..\new\
+..\files\
+..\files
 OutputFile.txt
 OutputFile.txt
 InputFile.txt

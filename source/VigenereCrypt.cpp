@@ -1,10 +1,10 @@
 int WordToKey(int key[], char word[]);
 int CheckSymbolLang(int symbol);
 int VigenereCryptProcessing(int symbol, int key_symbol);
-void StackFilesPath(char filename[], int InOrOut);
 int VigenereCrypt(char word[]);
 void VigenereWindow();
 void ShowMessage(int result);
+void StackString(char string1[], char string2[], char result[]);
 
 int CopyString(char string[], char copy[]){
     int i = 0;
@@ -107,35 +107,22 @@ int WordToKey(int key[], char word[]) {
     key[j] = -1;//добавляется в массив, чтобы отслеживать конец ключа
 }
 
-//функция составляет полный путь к файлу
-//складывая расположение каталга с файлами и название самого файла
-//если InOrOut равен нулю, то берётся название входного файла из структуры
-// options
-//иначе берётся название выходного файла
-//входной - input_file_name, выходной - output_file_name
-void StackFilesPath(char filename[], int InOrOut) {
+//функция складывает 2 строки
+//помещая результат в третью
+void StackString(char string1[], char string2[], char result[]) {
     int k = 0, j = 0;
-    while ((options.file_directory[k] > 31) ||
-           (options.file_directory[k] < 0)) {
-        filename[k] = options.file_directory[k];
+    while ((string1[k] > 31) ||
+            (string1[k] < 0)) {
+        result[k] = string1[k];
         k++;
     };
-    if (!InOrOut) {
-        while ((options.input_file_name[j] > 31) ||
-               (options.input_file_name[j] < 0)) {
-            filename[k] = options.input_file_name[j];
-            k++;
-            j++;
-        };
-    } else {
-        while ((options.output_file_name[j] > 31) ||
-               (options.output_file_name[j] < 0)) {
-            filename[k] = options.output_file_name[j];
-            k++;
-            j++;
-        };
+    while ((string2[j] > 31) ||
+            (string2[j] < 0)) {
+        result[k] = string2[j];
+        k++;
+        j++;
     };
-    filename[k] = 0;
+    result[k] = 0;
 };
 
 //функция шифровки методом Виженера
@@ -171,10 +158,10 @@ int VigenereCrypt(char word[]) {
         return 3;
     };
 
-    input_filename = new char[100];
-    output_filename = new char[100];
-    StackFilesPath(input_filename, 0);
-    StackFilesPath(output_filename, 1);
+    input_filename = new char[150];
+    output_filename = new char[150];
+    StackString(options.file_directory, options.input_file_name, input_filename);
+    StackString(options.file_directory, options.output_file_name, output_filename);
     printf("Входной файл %s\n", input_filename);
     printf("Выходной файл %s\n", output_filename);
     if (strcmp(input_filename, output_filename) == 0)
@@ -331,15 +318,17 @@ void VigenereCryptWindow() {
             switch (point) {
             case 1:
                 printf("Открывается поле ввода\n");
-                char *temp_string;
+                char *filelist_path;
                 //файл, в который загрузится список файлов
-                temp_string = "..\\saves\\filelist.txt";  
-                CopyString(temp_string, options.cache_file_name);  
+                filelist_path = new char [150];
+                StackString(options.file_directory, "filelist", filelist_path);
+                CopyString(filelist_path, options.cache_file_name);  
                 //запуск батника, который заполнит файл списком файлов
                 ShellExecute(FindWindow(NULL, "Шифратор"), "open", "..\\binary\\MakeFileList.bat", NULL, NULL, SW_HIDE);
+                printf("%s",filelist_path);
                 InputBox(100, 110, 1, options.input_file_name);
-                temp_string = "..\\saves\\cache.txt";
-                CopyString(temp_string, options.cache_file_name);
+                remove(filelist_path);
+                CopyString("..\\saves\\cache.txt", options.cache_file_name);
                 printf("\nВведено: ");
                 printf("%s ", input_filename);
                 break;

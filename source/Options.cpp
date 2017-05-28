@@ -12,23 +12,33 @@ void InputPathWindow();
 void ChangeBatDirectory(){
     
     FILE *bat_file, *temp_file;
-    int i=0, symbol;
+    int i=9, symbol;
     char command[100];
     
     command[0] = 'c';
-    command[1] = 'd';
-    command[2] = ' ';
-    while (options.file_directory[i] != 0){
-        command[i+3] = options.file_directory[i];
+    command[1] = 'h';
+    command[2] = 'd';
+    command[3] = 'i';
+    command[4] = 'r';
+    command[5] = ' ';
+    command[6] = '/';
+    command[7] = 'd';
+    command[8] = ' ';
+    while (options.file_directory[i-9] != 0){
+        command[i] = options.file_directory[i-9];
         i++;
     };
-    command[i+3] = options.file_directory[i];
+    command[i] = options.file_directory[i];
     printf("Открытие батника ");
     if ((bat_file = fopen("..\\binary\\MakeFileList.bat", "rt+")) == NULL){
         printf("прервано!");              
     };
     printf("Завершено\n");
     temp_file = fopen("..\\binary\\temp.txt", "wt+");
+    while ((symbol = fgetc(bat_file)) != 10){
+        fputc(symbol, temp_file);
+    };
+    fputc(10, temp_file);
     while (fgetc(bat_file) != 10);
     fputs(command,temp_file);
     fputc(10, temp_file);

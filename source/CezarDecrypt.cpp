@@ -11,10 +11,10 @@ int CezarDecrypt(int n) {
     FILE *fp1, *fp2;
     char *output_filename, *input_filename;
 
-    input_filename = new char[100];
-    output_filename = new char[100];
-    StackFilesPath(input_filename, 0);
-    StackFilesPath(output_filename, 1);
+    input_filename = new char[150];
+    output_filename = new char[150];
+    StackString(options.file_directory, options.input_file_name, input_filename);
+    StackString(options.file_directory, options.output_file_name, output_filename);
     printf("Входной файл %s\n", input_filename);
     printf("Выходной файл %s\n", output_filename);
     if (strcmp(input_filename, output_filename) == 0)
@@ -33,7 +33,7 @@ int CezarDecrypt(int n) {
     printf("Завершено\n");
     printf("Расшифровка началась...\n");
     int flag;
-    int c;
+    char c;
     c = getc(fp1);
     while (!feof(fp1)) {
         flag = 0;
@@ -147,11 +147,22 @@ void CezarDecryptWindow() {
         case 13:
             switch (point) {
             case 1:
+                printf("Открывается поле ввода\n");
+                char *filelist_path;
+                //файл, в который загрузится список файлов
+                filelist_path = new char [150];
+                StackString(options.file_directory, "filelist", filelist_path);
+                CopyString(filelist_path, options.cache_file_name);  
+                //запуск батника, который заполнит файл списком файлов
+                ShellExecute(FindWindow(NULL, "Шифратор"), "open", "..\\binary\\MakeFileList.bat", NULL, NULL, SW_HIDE);
                 InputBox(100, 110, 1, options.input_file_name);
+                remove(filelist_path);
+                CopyString("..\\saves\\cache.txt", options.cache_file_name);
                 printf("\nВведено: ");
                 printf("%s \n", input_filename);
                 break;
             case 2:
+                printf("Открывается поле ввода\n");
                 InputBox(100, 190, 1, options.output_file_name);
                 printf("\nВведено: ");
                 printf("%s \n", output_filename);
@@ -162,6 +173,7 @@ void CezarDecryptWindow() {
                 printf("%d \n", num);
                 break;
             case 4:
+                printf("Активируется объект SetNumber\n");
                 int result;
                 result = CezarDecrypt(num);
                 ShowMessage(result);

@@ -8,7 +8,7 @@ int InputBox(int x1, int y1, short active, char word[]);
 int WordToCache(char word[]) {
     FILE *cache_file;
     FILE *temp_file;
-    char symbol;
+    int symbol;
     int num = 1, i = 0;
     if ((cache_file = fopen(options.cache_file_name, "r+")) == NULL) {
         printf("Файл с кэшем не открылся ");
@@ -42,7 +42,7 @@ int WordToCache(char word[]) {
 
 int WordFromCache(char word[], int num_of_word) {
     FILE *cache_file;
-    char symbol;
+    int symbol;
     int num = 1, i = 0;
     if (num_of_word <= 0)
         return 0;
