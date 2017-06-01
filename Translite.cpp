@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <locale>
 #include <conio.h>
@@ -34,3 +35,4 @@ int main (){
     printf ("Проверяйте фаил ");
 	return 0;
 }
+
