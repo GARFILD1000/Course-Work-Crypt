@@ -2,6 +2,7 @@
 #include <locale>
 #include <conio.h>
 #include "string.h"
+
  
 int Transliterate (char* с)
 {
@@ -88,14 +89,14 @@ FILE *fp1, *fp2;
        }
 }
 
-
-int main ()
-{
-    setlocale(LC_ALL,"Russian");
+int main (){
+	setlocale(LC_ALL,"Russian");
+    char*str ; char*newStr;  
     char c;
     printf ("Чтобы зашифровать текст введите a, расшифровать b: ");
- 
     scanf ("%c", &c);
-    if (c == 'a') Transliterate (с) ;
+    if (c == 'a') TransliteEN (str, newStr) ;
+    if (c == 'b') TransliteDEC (str, newStr) ;
+    printf ("Проверяйте фаил ");
 	return 0;
 }
