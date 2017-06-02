@@ -1,14 +1,9 @@
+#include <stdlib.h>
+#include <graphics.h>
 #include "Struct.h"
 extern struct Options options;
 extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
         negative_color;
-
-#include <stdlib.h>
-#include <iostream>
-#include <conio.h>
-#include <windows.h>
-#include <graphics.h>
-
 
 //   процедура заполняет структуры с натройками стандартными значениями
 void RestoreOptions() {

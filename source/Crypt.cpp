@@ -6,14 +6,14 @@
 #include <windows.h>
 #include <iostream>
 
-#include "Struct.h"
-#include "Options.h"
-#include "InputBox.h"
 #include "CezarCrypt.h"
 #include "CezarDecrypt.h"
+#include "InputBox.h"
+#include "Options.h"
+#include "SaveRestore.h"
+#include "Struct.h"
 #include "VigenereCrypt.h"
 #include "VigenereDecrypt.h"
-#include "SaveRestore.h"
 
 struct Options options;
 struct Color bg_color, point_color, punkt_color, word_color, temp_color,
@@ -242,9 +242,9 @@ int main() {
     srand(time(NULL));
     setlocale(LC_ALL, "rus");
     LoadOptions();
-    
+
     if (!options.console_on) {
-    //    FreeConsole();
+        //    FreeConsole();
     };
 
     initwindow(600, 400, "Шифратор");
@@ -252,16 +252,17 @@ int main() {
     setbkcolor(RGB(bg_color.red, bg_color.green, bg_color.blue));
 
     cleardevice();
-//класс координат точки    
+    //класс координат точки
     POINT mypoint;
-//находится точка дисплея, где расположится окно
+    //находится точка дисплея, где расположится окно
     mypoint.x = getmaxwidth() / 2 - 300;
     mypoint.y = getmaxheight() / 2 - 200;
-//переменной дескриптора HWND передаётся дескриптор окна с заданным названием
+    //переменной дескриптора HWND передаётся дескриптор окна с заданным
+    //названием
     HWND BGI_window = FindWindow(NULL, "Шифратор");
-//окно ставится по центру    
+    //окно ставится по центру
     MoveWindow(BGI_window, mypoint.x, mypoint.y, 608, 423, false);
-    
+
     int menu_choice;
     do {
         menu_choice = MainMenu();

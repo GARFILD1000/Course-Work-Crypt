@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <graphics.h>
 #include "Struct.h"
+
+void StackString(char string1[], char string2[], char result[]);
+
 extern struct Options options;
 extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
         negative_color;
@@ -21,7 +24,28 @@ int WordToCache(char word[]) {
         fclose(cache_file);
         return 0;
     };
-    temp_file = fopen("..//saves//temp_file.txt", "w+");
+    
+    int j = 0, k = 0;
+    char temp_file_name[50], *temp_string;
+    temp_string = "temp_file.txt";
+    while (options.cache_file_name[j] != 0){
+        j++;
+    };
+    while ((options.cache_file_name[j] != 92) && (options.cache_file_name[j] != 47)) {
+        j--;
+    };
+    for (k = 0; k <= j; k++){
+        temp_file_name[k] = options.cache_file_name[k];
+    };
+    j = 0;
+    while (temp_string[j] != 0){
+        temp_file_name[k] = temp_string[j];
+        j++;
+        k++;
+    };
+    temp_file_name[k] = 0;
+    
+    temp_file = fopen(temp_file_name, "w+");
     while (word[i] != 0) {
         fputc(word[i], temp_file);
         i++;
@@ -35,9 +59,13 @@ int WordToCache(char word[]) {
     if (remove(options.cache_file_name)) {
         printf("Ошибка удаления\n");
         perror("Проблема в ");
+        return 0;
     };
-    if (rename("..//saves//temp_file.txt", options.cache_file_name))
+    if (rename(temp_file_name, options.cache_file_name)){
         printf("Oшибка переименования\n");
+        return 0;
+    };
+    printf("Строка %s добавлена в кэш-файл \n", word);
     return 1;
 }
 

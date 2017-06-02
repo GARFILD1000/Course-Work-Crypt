@@ -1,17 +1,16 @@
+#include <graphics.h>
+#include <stdlib.h>
+#include "Struct.h"
+
 int InputBox(int x1, int y1, short active, char word[]);
 
-#include <stdlib.h>
-#include <graphics.h>
-#include "Struct.h"
 extern struct Options options;
 extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
         negative_color;
 
-
-
-int CopyString(char string[], char copy[]){
+int CopyString(char string[], char copy[]) {
     int i = 0;
-    while (string[i] != 0){
+    while (string[i] != 0) {
         copy[i] = string[i];
         i++;
     };
@@ -114,13 +113,11 @@ int WordToKey(int key[], char word[]) {
 //помещая результат в третью
 void StackString(char string1[], char string2[], char result[]) {
     int k = 0, j = 0;
-    while ((string1[k] > 31) ||
-            (string1[k] < 0)) {
+    while ((string1[k] > 31) || (string1[k] < 0)) {
         result[k] = string1[k];
         k++;
     };
-    while ((string2[j] > 31) ||
-            (string2[j] < 0)) {
+    while ((string2[j] > 31) || (string2[j] < 0)) {
         result[k] = string2[j];
         k++;
         j++;
@@ -163,8 +160,10 @@ int VigenereCrypt(char word[]) {
 
     input_filename = new char[150];
     output_filename = new char[150];
-    StackString(options.file_directory, options.input_file_name, input_filename);
-    StackString(options.file_directory, options.output_file_name, output_filename);
+    StackString(options.file_directory, options.input_file_name,
+                input_filename);
+    StackString(options.file_directory, options.output_file_name,
+                output_filename);
     printf("Входной файл %s\n", input_filename);
     printf("Выходной файл %s\n", output_filename);
     if (strcmp(input_filename, output_filename) == 0)
@@ -242,7 +241,6 @@ void ShowMessage(int result) {
     };
     getch();
 }
-
 
 //меню зашифровки методом Виженера
 void VigenereCryptWindow() {
@@ -323,12 +321,14 @@ void VigenereCryptWindow() {
                 printf("Открывается поле ввода\n");
                 char *filelist_path;
                 //файл, в который загрузится список файлов
-                filelist_path = new char [150];
+                filelist_path = new char[150];
                 StackString(options.file_directory, "filelist", filelist_path);
-                CopyString(filelist_path, options.cache_file_name);  
+                CopyString(filelist_path, options.cache_file_name);
                 //запуск батника, который заполнит файл списком файлов
-                ShellExecute(FindWindow(NULL, "Шифратор"), "open", "..\\binary\\MakeFileList.bat", NULL, NULL, SW_HIDE);
-                printf("%s",filelist_path);
+                ShellExecute(FindWindow(NULL, "Шифратор"), "open",
+                             "..\\binary\\MakeFileList.bat", NULL, NULL,
+                             SW_HIDE);
+                printf("%s", filelist_path);
                 InputBox(100, 110, 1, options.input_file_name);
                 remove(filelist_path);
                 CopyString("..\\saves\\cache.txt", options.cache_file_name);

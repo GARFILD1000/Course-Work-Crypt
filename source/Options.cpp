@@ -1,20 +1,19 @@
+#include <graphics.h>
+#include <stdlib.h>
+#include "Struct.h"
+
 int InputBox(int x1, int y1, short active, char word[]);
 void RestoreOptionsWindow();
 
-#include <stdlib.h>
-#include <graphics.h>
-#include "Struct.h"
 extern struct Options options;
 extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
         negative_color;
 
-
-void ChangeBatDirectory(){
-    
+void ChangeBatDirectory() {
     FILE *bat_file, *temp_file;
-    int i=9, symbol;
+    int i = 9, symbol;
     char command[100];
-    
+
     command[0] = 'c';
     command[1] = 'h';
     command[2] = 'd';
@@ -24,31 +23,32 @@ void ChangeBatDirectory(){
     command[6] = '/';
     command[7] = 'd';
     command[8] = ' ';
-    while (options.file_directory[i-9] != 0){
-        command[i] = options.file_directory[i-9];
+    while (options.file_directory[i - 9] != 0) {
+        command[i] = options.file_directory[i - 9];
         i++;
     };
     command[i] = options.file_directory[i];
     printf("Открытие батника ");
-    if ((bat_file = fopen("..\\binary\\MakeFileList.bat", "rt+")) == NULL){
-        printf("прервано!");              
+    if ((bat_file = fopen("..\\binary\\MakeFileList.bat", "rt+")) == NULL) {
+        printf("прервано!");
     };
     printf("Завершено\n");
     temp_file = fopen("..\\binary\\temp.txt", "wt+");
-    while ((symbol = fgetc(bat_file)) != 10){
+    while ((symbol = fgetc(bat_file)) != 10) {
         fputc(symbol, temp_file);
     };
     fputc(10, temp_file);
-    while (fgetc(bat_file) != 10);
-    fputs(command,temp_file);
+    while (fgetc(bat_file) != 10)
+        ;
+    fputs(command, temp_file);
     fputc(10, temp_file);
-    while ((symbol = fgetc(bat_file)) != EOF){
+    while ((symbol = fgetc(bat_file)) != EOF) {
         fputc(symbol, temp_file);
     };
     fclose(temp_file);
     fclose(bat_file);
     remove("..\\binary\\MakeFileList.bat");
-    rename("..\\binary\\temp.txt","..\\binary\\MakeFileList.bat");
+    rename("..\\binary\\temp.txt", "..\\binary\\MakeFileList.bat");
     return;
 }
 
@@ -92,7 +92,8 @@ void InputPathWindow() {
         case 13:
             switch (point) {
             case 1:
-                if (InputBox(100, 120, 1, options.file_directory));
+                if (InputBox(100, 120, 1, options.file_directory))
+                    ;
                 break;
             case 2:
                 ChangeBatDirectory();
