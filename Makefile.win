@@ -5,8 +5,8 @@ CPP  = g++.exe
 CC   = gcc.exe
 WINDRES = windres.exe
 RES  = 
-OBJ  = build/CezarCrypt.o build/CezarDecrypt.o build/Crypt.o build/InputBox.o build/Options.o build/SaveRestore.o build/VigenereCrypt.o build/VigenereDecrypt.o $(RES)
-LINKOBJ  = build/CezarCrypt.o build/CezarDecrypt.o build/Crypt.o build/InputBox.o build/Options.o build/SaveRestore.o build/VigenereCrypt.o build/VigenereDecrypt.o $(RES)
+OBJ  = build/CezarCrypt.o build/CezarDecrypt.o build/Crypt.o build/InputBox.o build/Options.o build/SaveRestore.o build/VigenereCrypt.o build/VigenereDecrypt.o build/TransliteDecrypt.o build/TransliteCrypt.o $(RES)
+LINKOBJ  = build/CezarCrypt.o build/CezarDecrypt.o build/Crypt.o build/InputBox.o build/Options.o build/SaveRestore.o build/VigenereCrypt.o build/VigenereDecrypt.o build/TransliteDecrypt.o build/TransliteCrypt.o $(RES)
 LIBS =  -L"C:/Dev-Cpp/lib" -lbgi  -lgdi32 -lcomdlg32  -luuid -loleaut32 -lole32  
 INCS =  -I"C:/Dev-Cpp/include" 
 CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
@@ -49,3 +49,9 @@ build/VigenereCrypt.o: source/VigenereCrypt.cpp
 
 build/VigenereDecrypt.o: source/VigenereDecrypt.cpp
 	$(CPP) -c source/VigenereDecrypt.cpp -o build/VigenereDecrypt.o $(CXXFLAGS)
+
+build/TransliteDecrypt.o: source/TransliteDecrypt.cpp
+	$(CPP) -c source/TransliteDecrypt.cpp -o build/TransliteDecrypt.o $(CXXFLAGS)
+
+build/TransliteCrypt.o: source/TransliteCrypt.cpp
+	$(CPP) -c source/TransliteCrypt.cpp -o build/TransliteCrypt.o $(CXXFLAGS)
