@@ -1,9 +1,10 @@
-int CutWord(char word[], char cut_word[], int first, int last);
-int DeleteSymbol(char word[], int num);
-int AddSymbol(char word[], char symbol, int num);
-int WordToCache(char word[]);
-int WordFromCache(char word[], int num_of_word);
-int InputBox(int x1, int y1, short active, char word[]);
+#include <stdlib.h>
+#include <graphics.h>
+#include "Struct.h"
+extern struct Options options;
+extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
+        negative_color;
+
 
 int WordToCache(char word[]) {
     FILE *cache_file;

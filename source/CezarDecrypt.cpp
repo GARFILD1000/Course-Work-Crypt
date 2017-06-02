@@ -1,5 +1,16 @@
-int CezarDecrypt(int n);
-void CezarDecryptWindow();
+void StackString(char string1[], char string2[], char result[]);
+int CopyString(char string[], char copy[]);
+int InputBox(int x1, int y1, short active, char word[]);
+void ShowMessage(int result);
+int SetNumberBox(int x, int y, int active, int &num);
+
+#include <stdlib.h>
+#include <graphics.h>
+#include "Struct.h"
+extern struct Options options;
+extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
+        negative_color;
+
 
 //функция расшифровки методом Цезаря
 //получает на вход ключ шифра

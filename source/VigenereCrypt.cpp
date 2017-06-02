@@ -1,10 +1,13 @@
-int WordToKey(int key[], char word[]);
-int CheckSymbolLang(int symbol);
-int VigenereCryptProcessing(int symbol, int key_symbol);
-int VigenereCrypt(char word[]);
-void VigenereWindow();
-void ShowMessage(int result);
-void StackString(char string1[], char string2[], char result[]);
+int InputBox(int x1, int y1, short active, char word[]);
+
+#include <stdlib.h>
+#include <graphics.h>
+#include "Struct.h"
+extern struct Options options;
+extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
+        negative_color;
+
+
 
 int CopyString(char string[], char copy[]){
     int i = 0;

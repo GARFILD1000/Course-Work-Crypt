@@ -2,40 +2,25 @@
 #include <graphics.h>
 #include <locale.h>
 #include <stdlib.h>
-#include <string.h>
-#include <string.h>
 #include <time.h>
 #include <windows.h>
 #include <iostream>
 
-typedef struct Options {
-    char input_file_name[50];
-    char output_file_name[50];
-    char file_directory[100];
-    int console_on;
-    char cache_file_name[50];
-};
-Options options;
+#include "Struct.h"
+#include "Options.h"
+#include "InputBox.h"
+#include "CezarCrypt.h"
+#include "CezarDecrypt.h"
+#include "VigenereCrypt.h"
+#include "VigenereDecrypt.h"
+#include "SaveRestore.h"
 
-typedef struct Color {//структуры цвета, хранят RGB-значения каждого цвета
-    int red;
-    int green;
-    int blue;
-};
-Color bg_color, point_color, punkt_color, word_color, temp_color,
+struct Options options;
+struct Color bg_color, point_color, punkt_color, word_color, temp_color,
         negative_color;
-
-#include "InputBox.cpp"
-#include "SaveRestore.cpp"
-#include "VigenereCrypt.cpp"
-#include "VigenereDecrypt.cpp"
-#include "CezarCrypt.cpp"
-#include "CezarDecrypt.cpp"
-#include "Options.cpp"
 
 int MenuDecryptCategory() {
     int button, point = 1;
-
     setcolor(15);
     do {
         cleardevice();
@@ -257,8 +242,9 @@ int main() {
     srand(time(NULL));
     setlocale(LC_ALL, "rus");
     LoadOptions();
+    
     if (!options.console_on) {
-        FreeConsole();
+    //    FreeConsole();
     };
 
     initwindow(600, 400, "Шифратор");

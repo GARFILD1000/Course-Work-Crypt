@@ -1,7 +1,15 @@
-void RestoreOptions();
-void RestoreOptionsWindow();
-void SaveOptions();
-void LoadOptions();
+#include "Struct.h"
+extern struct Options options;
+extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
+        negative_color;
+
+#include <stdlib.h>
+#include <iostream>
+#include <conio.h>
+#include <windows.h>
+#include <graphics.h>
+
+
 //   процедура заполняет структуры с натройками стандартными значениями
 void RestoreOptions() {
     FILE *options_file;
@@ -12,7 +20,7 @@ void RestoreOptions() {
     fread(&punkt_color, sizeof(Color), 1, options_file);
     fread(&word_color, sizeof(Color), 1, options_file);
     fread(&negative_color, sizeof(Color), 1, options_file);
-    fread(&options, sizeof(Options), 1, options_file);
+    fread(&options, sizeof(struct Options), 1, options_file);
     fclose(options_file);
     return;
 }
@@ -60,6 +68,22 @@ void RestoreOptionsWindow() {
     } while (1);
 }
 
+// процедура сохраняет настройки и статистику в файл options.dat
+void SaveOptions() {
+    FILE *options_file;
+    printf("Сохранение опций");
+    options_file = fopen("..//saves//options.dat", "wb");
+    fwrite(&bg_color, sizeof(Color), 1, options_file);
+    fwrite(&point_color, sizeof(Color), 1, options_file);
+    fwrite(&punkt_color, sizeof(Color), 1, options_file);
+    fwrite(&word_color, sizeof(Color), 1, options_file);
+    fwrite(&negative_color, sizeof(Color), 1, options_file);
+    fwrite(&options, sizeof(struct Options), 1, options_file);
+    fclose(options_file);
+    printf(" завершено\n");
+    return;
+}
+
 //   процедура загружает настройки и статистику из файла options.dat в
 //   соотвтствующие структуры
 //   если этого файла нет в каталоге, создаёт его и заполняет изначальными
@@ -79,24 +103,8 @@ void LoadOptions() {
     fread(&punkt_color, sizeof(Color), 1, options_file);
     fread(&word_color, sizeof(Color), 1, options_file);
     fread(&negative_color, sizeof(Color), 1, options_file);
-    fread(&options, sizeof(Options), 1, options_file);
+    fread(&options, sizeof(struct Options), 1, options_file);
     fclose(options_file);
     printf(" завершена!\n");
-    return;
-}
-
-// процедура сохраняет настройки и статистику в файл options.dat
-void SaveOptions() {
-    FILE *options_file;
-    printf("Сохранение опций");
-    options_file = fopen("..//saves//options.dat", "wb");
-    fwrite(&bg_color, sizeof(Color), 1, options_file);
-    fwrite(&point_color, sizeof(Color), 1, options_file);
-    fwrite(&punkt_color, sizeof(Color), 1, options_file);
-    fwrite(&word_color, sizeof(Color), 1, options_file);
-    fwrite(&negative_color, sizeof(Color), 1, options_file);
-    fwrite(&options, sizeof(Options), 1, options_file);
-    fclose(options_file);
-    printf(" завершено\n");
     return;
 }

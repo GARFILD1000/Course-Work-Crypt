@@ -3,8 +3,9 @@
 int WordToKey(int key[], char word[]);
 int CheckSymbolLang(int symbol);
 int VigenereCryptProcessing(int symbol, int key_symbol);
-void StackFilesPath(char filename[], int InOrOut);
 int VigenereCrypt(char word[]);
-void VigenereWindow();
+void VigenereCryptWindow();
 void ShowMessage(int result);
+void StackString(char string1[], char string2[], char result[]);
+int CopyString(char string[], char copy[]);
 #endif

@@ -1,9 +1,14 @@
-int SetNumberBox(int x, int y, int active, int &num);
-void CezarWindow();
-int CezarCrypt(int n);
+void StackString(char string1[], char string2[], char result[]);
+int CopyString(char string[], char copy[]);
+int InputBox(int x1, int y1, short active, char word[]);
+void ShowMessage(int result);
 
-#define ENG 26
-#define RUS 32
+#include <stdlib.h>
+#include <graphics.h>
+#include "Struct.h"
+extern struct Options options;
+extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
+        negative_color;
 
 //функция, с помощью которой можно менять значение num
 //клавишами со стрелками

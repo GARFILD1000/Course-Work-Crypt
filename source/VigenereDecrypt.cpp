@@ -2,6 +2,21 @@ int VigenereDecryptProcessing(int symbol, int key_symbol);
 int VigenereDecrypt(char word[]);
 void VigenereDecryptWindow();
 
+int CheckSymbolLang(int symbol);
+int WordToKey(int key[], char word[]);
+void StackString(char string1[], char string2[], char result[]);
+int CopyString(char string[], char copy[]);
+int InputBox(int x1, int y1, short active, char word[]);
+void ShowMessage(int result);
+
+#include <stdlib.h>
+#include <graphics.h>
+#include "Struct.h"
+extern struct Options options;
+extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
+        negative_color;
+
+
 //функция, сдвигающая символ symbol влево по алфавиту на величину key_symbol
 int VigenereDecryptProcessing(int symbol, int key_symbol) {
     int lang;

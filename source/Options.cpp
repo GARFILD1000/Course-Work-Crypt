@@ -1,13 +1,13 @@
-int pow(int x, int stepen);
-int TempColor();
-void Themes(int point);
-int ThemeInit(char* file_name);
-void ColorThemes();
-void ColorSettings();
-void Design();
-void Options();
-void InputPathWindow();
- 
+int InputBox(int x1, int y1, short active, char word[]);
+void RestoreOptionsWindow();
+
+#include <stdlib.h>
+#include <graphics.h>
+#include "Struct.h"
+extern struct Options options;
+extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
+        negative_color;
+
 
 void ChangeBatDirectory(){
     
