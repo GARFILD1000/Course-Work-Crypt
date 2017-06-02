@@ -14,6 +14,8 @@
 #include "Struct.h"
 #include "VigenereCrypt.h"
 #include "VigenereDecrypt.h"
+#include "TransliteCrypt.h"
+#include "TransliteDecrypt.h"
 
 struct Options options;
 struct Color bg_color, point_color, punkt_color, word_color, temp_color,
@@ -40,20 +42,12 @@ int MenuDecryptCategory() {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
         outtextxy(300, 250, "Виженера");
-        /*setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==3)
-        setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,280,"");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==4)
+        if (point == 3)
         setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,310,"");
-        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==5)
-        setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,340,"");*/
+        outtextxy(300, 280, "Транслит");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
-        if (point == 3) {
+        if (point == 4) {
             setcolor(RGB(negative_color.red, negative_color.green,
                          negative_color.blue));
         };
@@ -62,29 +56,32 @@ int MenuDecryptCategory() {
         button = getch();
         switch (button) {
         case 72:
-            if (point > 1) {
+            if (point > 4) {
                 point--;
             };
             break;
         case 80:
-            if (point < 3) {
+            if (point < 4) {
                 point++;
             };
             break;
         case 13:
-            if (point != 3)
-                switch (point) {
-                case 1:
-                    printf("Расшифровка Цезаря");
-                    CezarDecryptWindow();
-                    break;
-                case 2:
-                    printf("Расшифровка Виженера");
-                    VigenereDecryptWindow();
-                    break;
-                case 3:
-                    break;
-                };
+            switch (point) {
+            case 1:
+                printf("Расшифровка Цезаря");
+                CezarDecryptWindow();
+                break;
+            case 2:
+                printf("Расшифровка Виженера");
+                VigenereDecryptWindow();
+                break;
+            case 3:
+                printf("Расшифровка Транслита");
+                TransliteDecryptWindow();
+                break;
+            case 4:
+                break;
+            };
             cleardevice();
             return 0;
         case 27:
@@ -115,22 +112,15 @@ int MenuCryptCategory() {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
         outtextxy(300, 250, "Виженера");
-        /*setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==3)
-        setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,280,"");
         setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==4)
-        setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,310,"");
-        setcolor(RGB(punkt_color.red,punkt_color.green,punkt_color.blue));
-        if (point==5)
-        setcolor(RGB(point_color.red,point_color.green,point_color.blue));
-        outtextxy(300,340,"");*/
+        if (point == 3){
+            setcolor(RGB(point_color.red,point_color.green,point_color.blue));
+        };
+        outtextxy(300, 280, "Транслит");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
-        if (point == 3) {
-            setcolor(RGB(negative_color.red, negative_color.green,
-                         negative_color.blue));
+        if (point == 4) {
+            setcolor(RGB(negative_color.red, negative_color.green, 
+                    negative_color.blue));
         };
         outtextxy(300, 370, "Назад");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
@@ -142,25 +132,26 @@ int MenuCryptCategory() {
             };
             break;
         case 80:
-            if (point < 3) {
+            if (point < 4) {
                 point++;
             };
             break;
         case 13:
-
-            if (point != 3) {
-                switch (point) {
-                case 1:
-                    printf("Шифровка Цезаря");
-                    CezarCryptWindow();
-                    break;
-                case 2:
-                    printf("Шифровка Виженера");
-                    VigenereCryptWindow();
-                    break;
-                case 3:
-                    break;
-                };
+            switch (point) {
+            case 1:
+                printf("Шифровка Цезаря");
+                CezarCryptWindow();
+                break;
+            case 2:
+                printf("Шифровка Виженера");
+                VigenereCryptWindow();
+                break;
+            case 3:
+                printf("Шифровка Виженера");
+                TransliteCryptWindow();
+                break;
+            case 4:
+                break;
             };
             cleardevice();
             return 0;
