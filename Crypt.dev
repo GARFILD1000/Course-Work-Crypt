@@ -1,7 +1,7 @@
 [Project]
 FileName=Crypt.dev
 Name=Crypt
-UnitCount=8
+UnitCount=10
 Type=1
 Ver=1
 ObjFiles=
@@ -100,7 +100,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=source\VigenereDecrypt.cpp
+FileName=source\TransliteDecrypt.cpp
 CompileCpp=1
 Folder=Crypt
 Compile=1
@@ -129,6 +129,16 @@ AutoIncBuildNr=0
 
 [Unit1]
 FileName=source\CezarCrypt.cpp
+CompileCpp=1
+Folder=Crypt
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit10]
+FileName=source\TransliteCrypt.cpp
 CompileCpp=1
 Folder=Crypt
 Compile=1

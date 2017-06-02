@@ -6,21 +6,22 @@ void StackString(char string1[], char string2[], char result[]);
 int CopyString(char string[], char copy[]);
 int InputBox(int x1, int y1, short active, char word[]);
 void ShowMessage(int result);
-int SetNumberBox(int x, int y, int active, int &num);
 
 extern struct Options options;
 extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
         negative_color;
 
-//функция расшифровки методом Цезаря
-//получает на вход ключ шифра
-//возвращает 1, если зашифрованный файл не открылся
-//возвращает 2, если файл с результатом расшифровки не создаётся
+//функция шифровки методом Цезаря
+//на вход получает величину сдвига по алфавиту
+//возвращает 1, если шифруемый файл не открылся
+//возвращает 2, если файл с результатом шифровки не создаётся
 //возвращает 4, если имена этих файлов совпадают
-//возвращает 5, если расшифровка прошла успешно
-int CezarDecrypt(int n) {
-    FILE *fp1, *fp2;
-    char *output_filename, *input_filename;
+//возвращает 0, если шифровка прошла успешно
+int TransliteCrypt (){
+	setlocale(LC_ALL, "rus");
+	FILE *fp1, *fp2;
+	char ch = 'q';
+	char *output_filename, *input_filename;
 
     input_filename = new char[150];
     output_filename = new char[150];
@@ -38,58 +39,93 @@ int CezarDecrypt(int n) {
         return 1;
     };
     printf("Завершено\n");
-    printf("Создание выходного файла...");
+    printf("Создание выходного файла ");
     if ((fp2 = fopen(output_filename, "w")) == NULL) {
         printf("Не создал!");
         return 2;
     };
     printf("Завершено\n");
-    printf("Расшифровка началась...\n");
-    int flag;
-    char c;
-    c = getc(fp1);
-    while (!feof(fp1)) {
-        flag = 0;
-        if (c >= 'A' && c <= 'Z') {
-            c = c - (n % ENG);
-            if (c < 'A')
-                c = 'Z' - ('A' - c) + 1;
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (c >= 'a' && c <= 'z') {
-            c = c - (n % ENG);
-            if (c < 'a')
-                c = 'z' - ('a' - c) + 1;
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (c >= 'А' && c <= 'Я') {
-            c = c - (n % RUS);
-            if (c < 'А')
-                c = 'Я' - ('А' - c) + 1;
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (c >= 'а' && c <= 'я') {
-            c = c - (n % RUS);
-            if (c < 'а')
-                c = 'я' - ('а' - c) + 1;
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (!flag)
-            fprintf(fp2, "%c", c);
-        c = getc(fp1);
+    printf("Шифровка началась...\n");
+	
+    while (!feof(fp1)){
+    	ch = getc(fp1);                      
+    	switch (ch){
+            case 'а': ch = 'f'; break;
+        	case 'б': ch = ','; break;
+        	case 'в': ch = 'd'; break;
+            case 'г': ch = 'u'; break;
+            case 'д': ch = 'l'; break;
+            case 'е': ch = 't'; break;
+            case 'ё': ch = '`'; break;
+            case 'ж': ch = ';'; break;
+            case 'з': ch = 'p'; break;
+            case 'и': ch = 'b'; break;
+            case 'й': ch = 'q'; break;
+            case 'к': ch = 'r'; break;
+            case 'л': ch = 'k'; break;
+            case 'м': ch = 'v'; break;
+            case 'н': ch = 'y'; break;
+        	case 'о': ch = 'j'; break;
+            case 'п': ch = 'g'; break;
+            case 'р': ch = 'h'; break;
+            case 'с': ch = 'c'; break;
+            case 'т': ch = 'n'; break;
+            case 'у': ch = 'e'; break;
+            case 'ф': ch = 'a'; break;
+            case 'х': ch = '['; break;
+            case 'ц': ch = 'w'; break;
+            case 'ч': ch = 'x'; break;
+            case 'ш': ch = 'i'; break;
+            case 'щ': ch = 'o'; break;
+            case 'ъ': ch = ']'; break;
+            case 'ы': ch = 's'; break;
+            case 'ь': ch = 'm'; break;
+            case 'э': ch = 39; break;
+            case 'ю': ch = '.'; break;
+            case 'я': ch = 'z'; break;
+            case 'А': ch = 'F'; break;
+            case 'Б': ch = '<'; break;
+            case 'В': ch = 'D'; break;
+            case 'Г': ch = 'U'; break;
+            case 'Д': ch = 'L'; break;
+            case 'Е': ch = 'T'; break;
+            case 'Ё': ch = '~'; break;
+            case 'Ж': ch = ':'; break;
+            case 'З': ch = 'P'; break;
+            case 'И': ch = 'B'; break;
+            case 'Й': ch = 'Q'; break;
+            case 'К': ch = 'R'; break;
+            case 'Л': ch = 'K'; break;
+            case 'М': ch = 'V'; break;
+            case 'Н': ch = 'Y'; break;
+            case 'О': ch = 'J'; break;
+            case 'П': ch = 'G'; break;
+            case 'Р': ch = 'H'; break;
+            case 'С': ch = 'C'; break;
+            case 'Т': ch = 'N'; break;
+            case 'У': ch = 'E'; break;
+            case 'Ф': ch = 'A'; break;
+            case 'Х': ch = '{'; break;
+            case 'Ц': ch = 'W'; break;
+            case 'Ч': ch = 'X'; break;
+            case 'Ш': ch = 'I'; break;
+            case 'Щ': ch = 'O'; break;
+            case 'Ъ': ch = '}'; break;
+            case 'Ы': ch = 'S'; break;
+            case 'Ь': ch = 'M'; break;
+            case 'Э': ch = '"'; break;
+            case 'Ю': ch = '>'; break;
+            case 'Я': ch = 'Z'; break;
+		}
+	    putc(ch,fp2);                    
     }
-    printf("Расшифровано!\n");
-    fclose(fp1);
-    fclose(fp2);
-    return 5;
+    fclose (fp1);
+    fclose (fp2);
+    return 0;
 }
 
-//меню расшифровки методом Цезаря
-void CezarDecryptWindow() {
+//меню зашифровки методом Цезаря
+void TransliteCryptWindow() {
     char *input_filename, *output_filename, *word;
     int k = 0, num = 1;
     input_filename = new char[50];
@@ -113,30 +149,25 @@ void CezarDecryptWindow() {
         settextstyle(1, 0, 5);
         setcolor(RGB(negative_color.red, negative_color.green,
                      negative_color.blue));
-        outtextxy(300, 50, "Шифр Цезаря");
+        outtextxy(300, 50, "Шифр Транслит");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         settextstyle(1, 0, 3);
         if (point == 1) {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
-        outtextxy(300, 100, "Назовите зашифрованный файл");
+        outtextxy(300, 100, "Назовите исходный файл");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         if (point == 2) {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
-        outtextxy(300, 180, "Назовите расшифрованный файл");
+        outtextxy(300, 180, "Назовите зашифрованный файл");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         if (point == 3) {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
-        outtextxy(300, 260, "Введите ключ шифра");
+        outtextxy(300, 340, "Зашифровать!");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         if (point == 4) {
-            setcolor(RGB(point_color.red, point_color.green, point_color.blue));
-        };
-        outtextxy(300, 340, "Расшифровать!");
-        setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
-        if (point == 5) {
             setcolor(RGB(negative_color.red, negative_color.green,
                          negative_color.blue));
         };
@@ -144,7 +175,6 @@ void CezarDecryptWindow() {
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         InputBox(100, 110, 0, options.input_file_name);
         InputBox(100, 190, 0, options.output_file_name);
-        SetNumberBox(250, 270, 0, num);
         button = getch();
         switch (button) {
         case 72:
@@ -153,7 +183,7 @@ void CezarDecryptWindow() {
             };
             break;
         case 80:
-            if (point < 5) {
+            if (point < 4) {
                 point++;
             };
             break;
@@ -183,17 +213,11 @@ void CezarDecryptWindow() {
                 printf("%s \n", output_filename);
                 break;
             case 3:
-                SetNumberBox(250, 270, 1, num);
-                printf("\nВведено: ");
-                printf("%d \n", num);
-                break;
-            case 4:
-                printf("Активируется объект SetNumber\n");
                 int result;
-                result = CezarDecrypt(num);
+                result = TransliteCrypt();
                 ShowMessage(result);
                 break;
-            case 5:
+            case 4:
                 return;
             };
             break;
@@ -202,3 +226,4 @@ void CezarDecryptWindow() {
         };
     } while (1);
 }
+
