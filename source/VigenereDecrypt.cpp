@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "Struct.h"
 
+int CheckSymbolLang(int symbol);
+int WordToKey(int key[], char word[]);
 void StackString(char string1[], char string2[], char result[]);
 int CopyString(char string[], char copy[]);
 int InputBox(int x1, int y1, short active, char word[]);
@@ -11,71 +13,71 @@ extern struct Options options;
 extern struct Color bg_color, point_color, punkt_color, word_color, temp_color,
         negative_color;
 
-//функция, с помощью которой можно менять значение num
-//клавишами со стрелками
-//парасетры x и y - координаты левого верхнего угла объекта
-int SetNumberBox(int x, int y, int active, int &num) {
-    char *num_out;
-    int button;
-    num_out = new char[10];
-    setlinestyle(0, 0, 2);
-    settextstyle(3, 0, 2);
-    settextjustify(1, 0);
-    setfillstyle(0, RGB(bg_color.red, bg_color.green, bg_color.blue));
+//функция, сдвигающая символ symbol влево по алфавиту на величину key_symbol
+int VigenereDecryptProcessing(int symbol, int key_symbol) {
+    int lang;
+    lang = CheckSymbolLang(symbol);
 
-    if (active) {
-        setcolor(RGB(point_color.red, point_color.green, point_color.blue));
-        line(x, y + 20, x + 20, y + 5);
-        line(x, y + 20, x + 20, y + 35);
-        line(x + 20, y + 5, x + 20, y + 35);
-        line(100 + x, y + 20, 80 + x, y + 5);
-        line(100 + x, y + 20, 80 + x, y + 35);
-        line(80 + x, y + 35, 80 + x, y + 5);
-        do {
-            bar(x + 25, y, x + 75, y + 40);
-            itoa(num, num_out, 10);
-            outtextxy(x + 50, y + 40, num_out);
-            button = getch();
-            switch (button) {
-            case 77:
-                num++;
-                break;
-            case 75:
-                if (num > 0) {
-                    num--;
-                };
-                break;
-            case 13:
-                return 1;
-            case 27:
-                return 0;
+    switch (lang) {
+    case 0:
+        return symbol;
+    case 1:
+        if ((symbol > 191) && (symbol < 224)) {
+            symbol -= key_symbol;
+            if (symbol < 190) {
+                symbol = symbol + 32;
             };
-        } while (1);
-    } else {
-        setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
-        itoa(num, num_out, 10);
-        outtextxy(x + 50, y + 40, num_out);
-        line(x, y + 20, x + 20, y + 5);
-        line(x, y + 20, x + 20, y + 35);
-        line(x + 20, y + 5, x + 20, y + 35);
-        line(100 + x, y + 20, 80 + x, y + 5);
-        line(100 + x, y + 20, 80 + x, y + 35);
-        line(80 + x, y + 35, 80 + x, y + 5);
-        return 0;
+        }
+        if ((symbol > 223) && (symbol < 256)) {
+            symbol -= key_symbol;
+            if (symbol < 224) {
+                symbol = symbol + 32;
+            };
+        }
+        return symbol;
+    case 2:
+        if ((symbol > 64) && (symbol < 91)) {
+            symbol -= key_symbol;
+            if (symbol < 65) {
+                symbol = symbol + 26;
+            };
+        }
+        if ((symbol > 96) && (symbol < 123)) {
+            symbol -= key_symbol;
+            if (symbol < 97) {
+                symbol = symbol + 26;
+            };
+        }
+        return symbol;
     };
-}
+};
 
-//функция шифровки методом Цезаря
-//на вход получает величину сдвига по алфавиту
-//возвращает 1, если шифруемый файл не открылся
-//возвращает 2, если файл с результатом шифровки не создаётся
-//возвращает 4, если имена этих файлов совпадают
-//возвращает 0, если шифровка прошла успешно
-int CezarCrypt(int n) {
-    setlocale(LC_ALL, "rus");
-    FILE *fp1, *fp2;
-
+//функция расшифровки методом Виженера, получает на вход слово - ключ шифра
+int VigenereDecrypt(char word[]) {
+    FILE *input_file;
+    FILE *output_file;
+    int *key, symbol, word_length = 0, key_length = 0, i = 0;
     char *output_filename, *input_filename;
+    while (word[word_length] != 0) {
+        word_length++;
+    };
+    printf("Длина полученного слова: %d \nСамо слово: %s\n", word_length - 1,
+           word);
+    key = new int[word_length];
+    WordToKey(key, word);
+
+    while (key[key_length] != -1) {
+        key_length++;
+    };
+
+    printf("\nДлина ключа %d \nПолученный ключ шифра: \n", key_length);
+    for (int j = 0; j < key_length; j++) {
+        printf("%d ", key[j]);
+    };
+    printf("\n");
+    if (key[0] == -1) {
+        return 3;
+    };
 
     input_filename = new char[150];
     output_filename = new char[150];
@@ -85,71 +87,51 @@ int CezarCrypt(int n) {
                 output_filename);
     printf("Входной файл %s\n", input_filename);
     printf("Выходной файл %s\n", output_filename);
-    if (strcmp(input_filename, output_filename) == 0)
+    if (strcmp(input_filename, output_filename) == 0) {
         return 4;
+    };
     printf("Открытие входного файла ");
-    if ((fp1 = fopen(input_filename, "r")) == NULL) {
+    if ((input_file = fopen(input_filename, "r")) == NULL) {
         printf("Не открыл!");
         return 1;
     };
     printf("Завершено\n");
     printf("Создание выходного файла ");
-    if ((fp2 = fopen(output_filename, "w")) == NULL) {
+    if ((output_file = fopen(output_filename, "w")) == NULL) {
         printf("Не создал!");
         return 2;
     };
     printf("Завершено\n");
-    printf("Шифровка началась...\n");
-    int flag;
-    char c;
-    c = getc(fp1);
-    while (!feof(fp1)) {
-        flag = 0;
-        if (c >= 'A' && c <= 'Z') {
-            c = c + (n % ENG);
-            if (c > 'Z')
-                c = 'A' + (c - 'Z') - 1;
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (c >= 'a' && c <= 'z') {
-            if ((c + (n % ENG)) > 'z')
-                c = 'a' + ((c + (n % ENG)) - 'z') - 1;
-            else
-                c = c + (n % ENG);
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (c >= 'А' && c <= 'Я') {
-            c = c + (n % RUS);
-            if (c > 'Я')
-                c = 'А' + (c - 'Я') - 1;
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (c >= 'а' && c <= 'я') {
-            c = c + (n % RUS);
-            if (c > 'я')
-                c = 'а' + (c - 'я') - 1;
-            fprintf(fp2, "%c", c);
-            flag = 1;
-        }
-        if (!flag)
-            fprintf(fp2, "%c", c);
-        c = getc(fp1);
-    }
-    printf("Зашифровано!\n");
-    fclose(fp1);
-    fclose(fp2);
-    return 0;
-}
 
-//меню зашифровки методом Цезаря
-void CezarCryptWindow() {
-    char *input_filename, *output_filename, *word;
-    int k = 0, num = 1;
+    printf("Расшифровка началась...\n");
+    while ((symbol = fgetc(input_file)) != EOF) {
+        // printf(" (%c %d) ",symbol, symbol);
+        symbol = VigenereDecryptProcessing(symbol, key[i]);
+        // printf("=> (%c %d) \n",symbol, symbol);
+        fputc(symbol, output_file);
+        if (CheckSymbolLang(symbol) != 0) {
+            if (i != key_length - 1) {
+                i++;
+            } else {
+                i = 0;
+            };
+        };
+    };
+    printf("Расшифровано!\n");
+    fclose(input_file);
+    fclose(output_file);
+    return 5;
+};
+
+void VigenereDecryptWindow() {//меню зашифровки методом Виженера
+    char *input_filename, *output_filename, *word, *temp_word;
+    int k = 0;
     input_filename = new char[50];
     output_filename = new char[50];
+    word = new char[50];
+    temp_word = new char[50];
+    word[0] = 0;
+    temp_word[0] = 0;
     do {
         input_filename[k] = options.input_file_name[k];
         k++;
@@ -169,18 +151,18 @@ void CezarCryptWindow() {
         settextstyle(1, 0, 5);
         setcolor(RGB(negative_color.red, negative_color.green,
                      negative_color.blue));
-        outtextxy(300, 50, "Шифр Цезаря");
+        outtextxy(300, 50, "Шифр Виженера");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         settextstyle(1, 0, 3);
         if (point == 1) {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
-        outtextxy(300, 100, "Назовите исходный файл");
+        outtextxy(300, 100, "Назовите зашифрованный файл");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         if (point == 2) {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
-        outtextxy(300, 180, "Назовите зашифрованный файл");
+        outtextxy(300, 180, "Назовите расшифрованный файл");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         if (point == 3) {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
@@ -190,7 +172,7 @@ void CezarCryptWindow() {
         if (point == 4) {
             setcolor(RGB(point_color.red, point_color.green, point_color.blue));
         };
-        outtextxy(300, 340, "Зашифровать!");
+        outtextxy(300, 340, "Расшифровать!");
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         if (point == 5) {
             setcolor(RGB(negative_color.red, negative_color.green,
@@ -200,18 +182,16 @@ void CezarCryptWindow() {
         setcolor(RGB(punkt_color.red, punkt_color.green, punkt_color.blue));
         InputBox(100, 110, 0, options.input_file_name);
         InputBox(100, 190, 0, options.output_file_name);
-        SetNumberBox(250, 270, 0, num);
+        InputBox(100, 270, 0, word);
         button = getch();
         switch (button) {
         case 72:
-            if (point > 1) {
+            if (point > 1)
                 point--;
-            };
             break;
         case 80:
-            if (point < 5) {
+            if (point < 5)
                 point++;
-            };
             break;
         case 13:
             switch (point) {
@@ -230,23 +210,30 @@ void CezarCryptWindow() {
                 remove(filelist_path);
                 CopyString("..\\saves\\cache.txt", options.cache_file_name);
                 printf("\nВведено: ");
-                printf("%s \n", input_filename);
+                printf("%s ", input_filename);
                 break;
             case 2:
                 printf("Открывается поле ввода\n");
                 InputBox(100, 190, 1, options.output_file_name);
                 printf("\nВведено: ");
-                printf("%s \n", output_filename);
+                printf("%s ", output_filename);
                 break;
             case 3:
-                printf("Активируется объект SetNumber\n");
-                SetNumberBox(250, 270, 1, num);
+                printf("Открывается поле ввода\n");
+                if (InputBox(100, 270, 1, temp_word))
+                    word = temp_word;
                 printf("\nВведено: ");
-                printf("%d \n", num);
+                printf("%s ", word);
+                for (int i = 0;; i++)
+                    if (word[i] == 0) {
+                        word[i] = 13;
+                        word[i + 1] = 0;
+                        break;
+                    };
                 break;
             case 4:
                 int result;
-                result = CezarCrypt(num);
+                result = VigenereDecrypt(word);
                 ShowMessage(result);
                 break;
             case 5:
